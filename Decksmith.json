@@ -1,0 +1,18 @@
+{
+	"id": "Decksmith",
+	"name": "Decksmith",
+	"display_name": "Decksmith",
+	"author": ["theAstra"],
+	"description": "A spiritual successor to Deck Creator; Make your own Balatro decks!",
+	"prefix": "ds",
+	"main_file": "main.lua",
+	"priority": 1,
+	"badge_colour": "d90e00",
+	"badge_text_colour": "ffad66",
+	"version": "0.1.0",
+	"git_owner": "the-Astra",
+	"dependencies": [
+		"Steamodded (>=26.829.0)"
+	],
+	"allow_redistribution": true
+}
