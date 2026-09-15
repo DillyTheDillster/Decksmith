@@ -13,16 +13,20 @@ Decksmith.customize_menu {
         Decksmith.start_args.ds_winning_ante = tonumber(Decksmith.start_args.ds_winning_ante) or 8
 
         return {
-            {n=G.UIT.R, config = {align = 'cm', padding = 0.15}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_general'), scale = 0.5, colour = G.C.WHITE}}}},
-            {n=G.UIT.R, nodes = {
-                Decksmith.text_input_element('ds_joker_slots'),
-                Decksmith.text_input_element('ds_consumable_slots'),
-                Decksmith.text_input_element('ds_shop_slots'),
-            }},        
-            {n=G.UIT.R, nodes = {
-                Decksmith.text_input_element('ds_ante_scaling'),
-                Decksmith.text_input_element('ds_winning_ante'),
-            }},
+            {n = G.UIT.R, nodes = {
+                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_general'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_joker_slots'),
+                        Decksmith.text_input_element('ds_consumable_slots'),
+                        Decksmith.text_input_element('ds_shop_slots'),
+                    }},        
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_ante_scaling'),
+                        Decksmith.text_input_element('ds_winning_ante'),
+                    }},
+                }}
+            }}
         }
     end,
     start_run = function(self, choice)
@@ -64,19 +68,23 @@ Decksmith.customize_menu {
         Decksmith.start_args.ds_discard_cost = tonumber(Decksmith.start_args.ds_discard_cost) or 0
 
         return {
-            {n=G.UIT.R, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_money'), scale = 0.5, colour = G.C.WHITE}}}},
-            {n=G.UIT.R, nodes = {
-                Decksmith.text_input_element('ds_starting_dollars'),
-                Decksmith.text_input_element('ds_reroll_cost'),
-                Decksmith.text_input_element('ds_dollars_per_hand'),
-                Decksmith.text_input_element('ds_dollars_per_discard'),
-            }},
-            {n=G.UIT.R, nodes = {
-                Decksmith.text_input_element('ds_interest_amount'),
-                Decksmith.text_input_element('ds_interest_cap'),
-                Decksmith.text_input_element('ds_discount_percentage'),
-                Decksmith.text_input_element('ds_discard_cost'),
-            }},
+            {n = G.UIT.R, nodes = {
+                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_money'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_starting_dollars'),
+                        Decksmith.text_input_element('ds_reroll_cost'),
+                        Decksmith.text_input_element('ds_dollars_per_hand'),
+                        Decksmith.text_input_element('ds_dollars_per_discard'),
+                    }},
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_interest_amount'),
+                        Decksmith.text_input_element('ds_interest_cap'),
+                        Decksmith.text_input_element('ds_discount_percentage'),
+                        Decksmith.text_input_element('ds_discard_cost'),
+                    }},
+                }}
+            }}
         }
     end,
     start_run = function(self, choice)
@@ -108,16 +116,20 @@ Decksmith.customize_menu {
         Decksmith.start_args.ds_pcard_rate = tonumber(Decksmith.start_args.ds_pcard_rate) or 0
 
         return {
-            {n=G.UIT.R, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_rates'), scale = 0.5, colour = G.C.WHITE}}}},
-            {n=G.UIT.R, nodes = {
-                Decksmith.text_input_element('ds_joker_rate'),
-                Decksmith.text_input_element('ds_tarot_rate'),
-                Decksmith.text_input_element('ds_planet_rate'),
-            }},
-            {n=G.UIT.R, nodes = {
-                Decksmith.text_input_element('ds_spectral_rate'),
-                Decksmith.text_input_element('ds_pcard_rate'),
-            }},
+            {n = G.UIT.R, nodes = {
+                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_rates'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_joker_rate'),
+                        Decksmith.text_input_element('ds_tarot_rate'),
+                        Decksmith.text_input_element('ds_planet_rate'),
+                    }},
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_spectral_rate'),
+                        Decksmith.text_input_element('ds_pcard_rate'),
+                    }},
+                }}
+            }}
         }
     end,
     start_run = function(self, choice)
