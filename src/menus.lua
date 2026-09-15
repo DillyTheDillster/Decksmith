@@ -14,7 +14,7 @@ Decksmith.customize_menu {
 
         return {
             {n = G.UIT.R, nodes = {
-                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_general'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {align = 'cl', minw = 0.6}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_general'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
                 {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}},
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {align = 'cm'}, nodes = {
@@ -32,8 +32,8 @@ Decksmith.customize_menu {
     end,
     start_run = function(self, choice)
         -- Ante stuff
-        G.GAME.starting_params.ante_scaling = tonumber(Decksmith.ds_start_args.ante_scaling) or 1
-        G.GAME.win_ante = to_big(tonumber(Decksmith.ds_start_args.winning_ante) or 8)
+        G.GAME.starting_params.ante_scaling = tonumber(Decksmith.start_args.ds_ante_scaling) or 1
+        G.GAME.win_ante = to_big(tonumber(Decksmith.start_args.ds_winning_ante) or 8)
 
         -- Area changing
         G.E_MANAGER:add_event(Event({
@@ -46,8 +46,8 @@ Decksmith.customize_menu {
                     G.consumeables:change_size(Decksmith.start_args.ds_consumable_slots - G.GAME.starting_params.consumable_slots)
                 end
 
-                if tonumber(Decksmith.ds_start_args.shop_slots) then
-                    change_shop_size(Decksmith.ds_start_args.shop_slots - 2)
+                if tonumber(Decksmith.start_args.ds_shop_slots) then
+                    change_shop_size(Decksmith.start_args.ds_shop_slots - 2)
                 end
                 return true;
             end
@@ -70,20 +70,22 @@ Decksmith.customize_menu {
 
         return {
             {n = G.UIT.R, nodes = {
-                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_money'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {align = 'cl', minw = 0.6}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_money'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
                 {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}},
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {align = 'cm'}, nodes = {
                         Decksmith.text_input_element('ds_starting_dollars'),
-                        Decksmith.text_input_element('ds_reroll_cost'),
-                        Decksmith.text_input_element('ds_dollars_per_hand'),
-                        Decksmith.text_input_element('ds_dollars_per_discard'),
-                    }},
-                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
                         Decksmith.text_input_element('ds_interest_amount'),
                         Decksmith.text_input_element('ds_interest_cap'),
-                        Decksmith.text_input_element('ds_discount_percentage'),
+                    }},
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_dollars_per_hand'),
+                        Decksmith.text_input_element('ds_dollars_per_discard'),
                         Decksmith.text_input_element('ds_discard_cost'),
+                    }},
+                    {n=G.UIT.R, config = {align = 'cm'}, nodes = {
+                        Decksmith.text_input_element('ds_reroll_cost'),
+                        Decksmith.text_input_element('ds_discount_percentage'),
                     }},
                 }}
             }}
@@ -119,7 +121,7 @@ Decksmith.customize_menu {
 
         return {
             {n = G.UIT.R, nodes = {
-                {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_rates'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {align = 'cl', minw = 0.6}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_rates'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
                 {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}},
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {align = 'cm'}, nodes = {

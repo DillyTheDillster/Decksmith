@@ -13,7 +13,7 @@ function Decksmith.text_input_element(value, args)
     end
 
     local t = {
-        n=G.UIT.C, config = { align = 'cm', padding = 0.15}, nodes = {
+        n=G.UIT.C, config = { align = 'bm', padding = 0.15}, nodes = {
             {n=G.UIT.R, config = {align = 'cm', padding = 0.1}, nodes = label_nodes},
             {n=G.UIT.R, config = {align = 'cm'}, nodes = {
                     create_text_input {
