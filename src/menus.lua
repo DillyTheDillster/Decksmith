@@ -15,6 +15,7 @@ Decksmith.customize_menu {
         return {
             {n = G.UIT.R, nodes = {
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_general'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}},
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {align = 'cm'}, nodes = {
                         Decksmith.text_input_element('ds_joker_slots'),
@@ -70,6 +71,7 @@ Decksmith.customize_menu {
         return {
             {n = G.UIT.R, nodes = {
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_money'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}},
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {align = 'cm'}, nodes = {
                         Decksmith.text_input_element('ds_starting_dollars'),
@@ -118,6 +120,7 @@ Decksmith.customize_menu {
         return {
             {n = G.UIT.R, nodes = {
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {{n=G.UIT.T, config = {text = localize('run_select_ds_rates'), scale = 0.5, colour = G.C.WHITE, vert = true}}}},
+                {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}},
                 {n=G.UIT.C, config = {align = 'cm', padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {align = 'cm'}, nodes = {
                         Decksmith.text_input_element('ds_joker_rate'),

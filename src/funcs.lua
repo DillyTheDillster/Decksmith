@@ -2,7 +2,7 @@ to_big = to_big or function(x) return x end
 
 function Decksmith.text_input_element(value, args)
     args = args or {}
-    args.colour = args.colour or G.C.RED
+    args.colour = args.colour or G.C.BLUE
     local label = args.label or G.localization.misc.dictionary['k_'..value] or value
     label = type(label) == 'string' and {label} or label
 
