@@ -21,11 +21,11 @@ return {
 
             k_ds_starting_dollars = 'Starting Dollars',
             k_ds_reroll_cost = 'Reroll Cost',
-            k_ds_dollars_per_hand = {'Dollars per', 'Hand'},
-            k_ds_dollars_per_discard = {'Dollars per', 'Discard'},
+            k_ds_dollars_per_hand = 'Dollars per Hand',
+            k_ds_dollars_per_discard = 'Dollars per Discard',
             k_ds_interest_amount = 'Interest Amount',
             k_ds_interest_cap = 'Interest Cap',
-            k_ds_discount_percentage = {'Discount', 'Percentage'},
+            k_ds_discount_percentage = 'Discount Percentage',
             k_ds_discard_cost = 'Discard Cost',
 
             k_ds_joker_rate = 'Joker Rate',
@@ -33,6 +33,11 @@ return {
             k_ds_planet_rate = 'Planet Rate',
             k_ds_spectral_rate = 'Spectral Rate',
             k_ds_pcard_rate = 'Playing Card Rate',
+
+            -- Title labels
+            k_ds_general = 'GENERAL',
+            k_ds_money = 'MONEY',
+            k_ds_rates = 'RATES',
 
             -- Run Select
             run_select_ds_general = 'General',
