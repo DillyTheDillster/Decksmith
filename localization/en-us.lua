@@ -51,6 +51,10 @@ return {
             run_select_ds_starting_jokers_random = 'Random Joker',
             run_select_ds_starting_consumables_random = 'Random Card',
             run_select_ds_starting_vouchers_random = 'Random Voucher',
+        },
+        v_dictionary = {
+            a_ds_jokers_remaining = '#1# Joker(s) remaining',
+            a_ds_consumables_remaining = '#1# Consumable(s) remaining',
         }
     }
 }

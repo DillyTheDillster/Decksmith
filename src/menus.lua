@@ -153,7 +153,7 @@ Decksmith.customize_menu({
         for k, count in pairs(selection) do
             selected = selected + count
         end
-        return self:selection_limit() - selected .. ' Jokers Remaining'
+        return localize{type = 'variable', key = 'a_ds_jokers_remaining', vars = {self:selection_limit() - selected}}
     end,
     start_run = function(self, choice)
         for k, count in pairs(choice) do
@@ -214,7 +214,7 @@ Decksmith.customize_menu({
         for k, count in pairs(selection) do
             selected = selected + count
         end
-        return self:selection_limit() - selected .. ' Jokers Remaining'
+        return localize{type = 'variable', key = 'a_ds_consumables_remaining', vars = {self:selection_limit() - selected}}
     end,
     start_run = function(self, choice)
         for k, count in pairs(choice) do
