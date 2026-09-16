@@ -3,6 +3,20 @@ Decksmith.customize_menu = SMODS.RunSelectPage:extend {
     optional = function() return SMODS.RunSelect.Setup.choices.deck_choice == 'b_ds_custom' end,
 }
 
+--[[ Decksmith.customize_menu {
+    key = 'import',
+    definition = function(self)
+        return Decksmith.create_menu_page({
+            key = 'k_ds_import',
+            no_reset = true,
+            no_random = true,
+            options = {
+                
+            }
+        })
+    end,
+} ]]
+
 Decksmith.customize_menu {
     key = 'general',
     definition = function(self)
@@ -355,3 +369,35 @@ Decksmith.customize_menu({
         return nil
     end,
 })
+
+--[[ Decksmith.customize_menu {
+    key = 'modifiers',
+    definition = function(self)
+        return Decksmith.create_menu_page({
+            key = 'k_ds_modifiers',
+            no_reset = true,
+            no_random = true,
+            options = {
+                
+            }
+        })
+    end,
+    set_default = function(self, choice)
+        Decksmith.start_args.modifiers = {}
+        return nil
+    end,
+} ]]
+
+--[[ Decksmith.customize_menu {
+    key = 'export',
+    definition = function(self)
+        return Decksmith.create_menu_page({
+            key = 'k_ds_export',
+            no_reset = true,
+            no_random = true,
+            options = {
+                
+            }
+        })
+    end,
+} ]]

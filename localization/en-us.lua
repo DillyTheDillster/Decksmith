@@ -35,17 +35,23 @@ return {
             k_ds_pcard_rate = 'Playing Card Rate',
 
             -- Title labels
+            k_ds_import = 'IMPORT DECK',
             k_ds_general = 'GENERAL',
             k_ds_money = 'MONEY',
             k_ds_rates = 'RATES',
+            k_ds_MODIFIERS = 'MODIFIERS',
+            k_ds_export = 'EXPORT DECK',
 
             -- Run Select
+            run_select_ds_import = 'Import',
             run_select_ds_general = 'General',
             run_select_ds_money = 'Money',
             run_select_ds_rates = 'Rates',
             run_select_ds_starting_jokers = 'Jokers',
             run_select_ds_starting_consumables = 'Consumables',
             run_select_ds_starting_vouchers = 'Vouchers',
+            run_select_ds_modifiers = 'Modifiers',
+            run_select_ds_export = 'Export',
 
             -- Run Select Random
             run_select_ds_starting_jokers_random = 'Random Joker',
