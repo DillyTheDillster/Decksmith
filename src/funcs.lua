@@ -97,9 +97,6 @@ function Decksmith.create_page_button(type, size, key)
     return {n=G.UIT.C, config = {minw = size, minh = size, colour = not args.atlas and args.colour, button = args.on_click, hover = args.hover, shadow = args.shadow, r=true, ref_value = key}, nodes = nodes}
 end
 
--- TODO: implement functions
--- I suggest that there is a global table indexed by these values that contains a reset value and a range for randoming ot be used in these functions
--- e.g. {ds_starting_dollars = {reset = 5, min = 0, max = 100}}
 G.FUNCS.ds_reset = function(e)
     --  print('[NYI] Reset',e.config.ref_value)
     Decksmith.start_args[e.config.ref_value] = Decksmith.defaults[e.config.ref_value].reset
