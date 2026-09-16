@@ -161,12 +161,29 @@ Decksmith.customize_menu({
     handle_choice = function(self, choice, remove)
         SMODS.RunSelectPage.handle_choice(self, choice, remove)
         if remove then
-            Decksmith.start_args.ds_starting_jokers[choice.config.center_key] = Decksmith.start_args.ds_starting_jokers[choice.config.center_key] - 1
-            if Decksmith.start_args.ds_starting_jokers[choice.config.center_key] <= 0 then
-                Decksmith.start_args.ds_starting_jokers[choice.config.center_key] = nil
+            Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] - 1
+            if Decksmith.start_args.ds_starting_jokers[choice.config.center.key] <= 0 then
+                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = nil
             end
+        elseif not Decksmith.start_args.ds_starting_jokers[choice.config.center.key] then
+            Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = 1
         else
-            Decksmith.start_args.ds_starting_jokers[choice.config.center_key] = Decksmith.start_args.ds_starting_jokers[choice.config.center_key] and Decksmith.start_args.ds_starting_jokers[choice.config.center_key] + 1 or 1
+            Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] + 1
+        end
+    end,
+    choose_random = function(self)
+        local choices = SMODS.RunSelect.Setup.choices[self.key] or {}
+        if self.selection_limit() > SMODS.table_size(choices) then
+            local options = {}
+            for i=1, #self.pool do
+                if self.pool[i].unlocked then
+                    options[#options + 1] = self.pool[i].key
+                end
+            end
+
+            local selected = pseudorandom_element(options, pseudoseed(os.time()))
+            play_sound('whoosh1', math.random()*0.2 + 0.99, 0.35)
+            self:handle_choice({config = {center = {key = selected}}})
         end
     end,
     set_default = function(self, choice)
@@ -177,8 +194,9 @@ Decksmith.customize_menu({
 
 Decksmith.customize_menu({
     key = 'starting_vouchers',
-    grid_size = {2, 3},
+    grid_size = {2, 4},
     automatic_preview = true,
+    random_select = true,
     selection_limit = #G.P_CENTER_POOLS.Voucher,
     include_deck_preview = true,
     double_click_advance = false,
@@ -217,9 +235,28 @@ Decksmith.customize_menu({
     handle_choice = function(self, choice, remove)
         SMODS.RunSelectPage.handle_choice(self, choice, remove)
         if remove then
-            Decksmith.start_args.ds_starting_vouchers[choice.config.center_key] = nil
+            Decksmith.start_args.ds_starting_vouchers[choice.config.center.key] = nil
         else
-            Decksmith.start_args.ds_starting_vouchers[choice.config.center_key] = true
+            Decksmith.start_args.ds_starting_vouchers[choice.config.center.key] = true
+        end
+    end,
+    choose_random = function(self)
+        local choices = SMODS.RunSelect.Setup.choices[self.key] or {}
+        if self.selection_limit > SMODS.table_size(choices) then
+            local options = {}
+            for i=1, #self.pool do
+                if self.pool[i].unlocked then
+                    options[#options + 1] = self.pool[i].key
+                end
+            end
+
+            local selected = false
+            while not selected do
+                selected = pseudorandom_element(options, pseudoseed(os.time()))
+                if (selected == choices or choices[selected]) and #options > 1 then selected = false end
+            end
+            play_sound('whoosh1', math.random()*0.2 + 0.99, 0.35)
+            self:handle_choice({config = {center = {key = selected}}})
         end
     end,
     set_default = function(self, choice)

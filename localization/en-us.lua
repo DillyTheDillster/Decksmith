@@ -45,6 +45,10 @@ return {
             run_select_ds_rates = 'Rates',
             run_select_ds_starting_jokers = 'Jokers',
             run_select_ds_starting_vouchers = 'Vouchers',
+
+            -- Run Select Random
+            run_select_ds_starting_jokers_random = 'Random Joker',
+            run_select_ds_starting_vouchers_random = 'Random Voucher',
         }
     }
 }
