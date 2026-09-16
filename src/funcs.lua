@@ -16,16 +16,17 @@ function Decksmith.text_input_element(value, args)
         n=G.UIT.R, config = { align = 'cr', padding = 0.1}, nodes = {
             {n=G.UIT.C, config = {align = 'cl', padding = 0.1, minw = 3.8}, nodes = label_nodes},
             {n=G.UIT.C, config = {align = 'cm'}, nodes = {
-                    create_text_input {
+                create_text_input {
                     id = value .. '_input',
                     prompt_text = args.text or args.label,
                     w = args.w or 1.5,
                     h = args.h or 0.5,
-                    all_caps = args.all_caps or true,
+                    all_caps = args.all_caps or false,
                     ref_table = args.ref_table or Decksmith.start_args,
                     ref_value = value,
                     colour = args.colour,
-                    hooked_colour = args.hooked_colour or args.colour and darken(args.colour, 0.3)
+                    hooked_colour = args.hooked_colour or args.colour and darken(args.colour, 0.3),
+                    extended_corpus = true
                 }
             }},
             {n=G.UIT.C, config = {align='cm'}, nodes = {
