@@ -50,7 +50,7 @@ function Decksmith.create_menu_page(args)
     local options = {n=G.UIT.C, config = {align = 'cl'}, nodes = {}}
     
     for _, option in ipairs(args.options) do
-        print(option)
+        -- print(option)
         options.nodes[#options.nodes + 1] = option[1] == 'spacer' and {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.text_input_element(option[1], option[2])
     end                        
 
@@ -80,17 +80,6 @@ function Decksmith.create_menu_page(args)
         }}
 end
 
-Decksmith.buttons = {
-    reset = {
-        colour = G.C.GOLD,
-        on_click = 'ds_reset'
-    },
-    random = {
-        colour = G.C.GREEN,
-        on_click = 'ds_random'
-    },
-}
-
 function Decksmith.create_page_button(type, size, key)
     local args = Decksmith.buttons[type] or {}
 
@@ -101,9 +90,13 @@ end
 -- I suggest that there is a global table indexed by these values that contains a reset value and a range for randoming ot be used in these functions
 -- e.g. {ds_starting_dollars = {reset = 5, min = 0, max = 100}}
 G.FUNCS.ds_reset = function(e)
-    print('[NYI] Reset',e.config.ref_value)
+    --  print('[NYI] Reset',e.config.ref_value)
+    Decksmith.start_args[e.config.ref_value] = Decksmith.defaults[e.config.ref_value].reset
+    -- G.FUNCS.text_input(G.OVERLAY_MENU:get_UIE_by_ID(e.config.ref_value..'_input'))
 end
 
 G.FUNCS.ds_random = function(e)
-    print('[NYI] Random',e.config.ref_value)
+    -- print('[NYI] Random',e.config.ref_value)
+    Decksmith.start_args[e.config.ref_value] = math.random(Decksmith.defaults[e.config.ref_value].min, Decksmith.defaults[e.config.ref_value].max)
+    -- G.FUNCS.text_input(G.OVERLAY_MENU:get_UIE_by_ID(e.config.ref_value..'_input'))
 end

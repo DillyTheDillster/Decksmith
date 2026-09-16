@@ -51,9 +51,6 @@ Decksmith.customize_menu {
     end
 }
 
-Decksmith.button_size = 0.7 -- TODO: put this somewhere better
-Decksmith.page_height = 6.8
-
 Decksmith.customize_menu {
     key = 'money',
     definition = function(self)
