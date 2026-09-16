@@ -90,14 +90,23 @@ function Decksmith.create_page_button(type, size, key)
     local args = Decksmith.buttons[type] or {}
 
     if args.atlas then
-        return {n=G.UIT.O, config = {
-            object = SMODS.create_sprite(0, 0, size, size, args.atlas, args.pos),
+        local sprite = SMODS.create_sprite(0, 0, size, size, args.atlas, args.pos)
+        sprite.states.hover.can = false
+        sprite.states.click.can = false
+        sprite.states.drag.can = false
+        return {n=G.UIT.C, config = {
+            minw = size,
+            minh = size,
+            colour = G.C.CLEAR,
             tooltip = args.tooltip and {text = {localize(args.tooltip)}},
             button = args.on_click,
             hover = args.hover,
             shadow = args.shadow,
             ref_value = key,
-            align = 'cm'
+            align = 'cm',
+            r = true
+        }, nodes = {
+            {n=G.UIT.O, config = {object = sprite}}
         }}
     end
 
