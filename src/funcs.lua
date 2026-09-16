@@ -100,3 +100,7 @@ G.FUNCS.ds_random = function(e)
     Decksmith.start_args[e.config.ref_value] = math.random(Decksmith.defaults[e.config.ref_value].min, Decksmith.defaults[e.config.ref_value].max)
     -- G.FUNCS.text_input(G.OVERLAY_MENU:get_UIE_by_ID(e.config.ref_value..'_input'))
 end
+
+function Decksmith.get_consumable_pools()
+    return {G.P_CENTER_POOLS.Tarot, G.P_CENTER_POOLS.Planet, G.P_CENTER_POOLS.Spectral}
+end

@@ -44,10 +44,12 @@ return {
             run_select_ds_money = 'Money',
             run_select_ds_rates = 'Rates',
             run_select_ds_starting_jokers = 'Jokers',
+            run_select_ds_starting_consumables = 'Consumables',
             run_select_ds_starting_vouchers = 'Vouchers',
 
             -- Run Select Random
             run_select_ds_starting_jokers_random = 'Random Joker',
+            run_select_ds_starting_consumables_random = 'Random Card',
             run_select_ds_starting_vouchers_random = 'Random Voucher',
         }
     }

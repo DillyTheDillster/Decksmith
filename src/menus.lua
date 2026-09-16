@@ -193,6 +193,64 @@ Decksmith.customize_menu({
 })
 
 Decksmith.customize_menu({
+    key = 'starting_consumables',
+    automatic_preview = true,
+    random_select = true,
+    double_click_advance = false,
+    selection_limit = function() return tonumber(Decksmith.start_args.ds_consumable_slots) or Decksmith.defaults.ds_consumable_slots.reset end,
+    generate_pool = function(self) return SMODS.merge_lists(Decksmith.get_consumable_pools()) end,
+    selected_text = function(self, selection)
+        if not selection then selection = {} end
+        local selected = SMODS.table_size(selection)
+        return self:selection_limit() - selected .. ' Consumables Remaining'
+    end,
+    start_run = function(self, choice)
+        for k, _ in pairs(choice) do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after', delay = 0.7,
+                func = function()
+                    local c = SMODS.add_card({key = k, skip_materialize = true})
+                    c:start_materialize()
+                    return true
+                end
+            }))
+        end
+    end,
+    handle_choice = function(self, choice, remove)
+        SMODS.RunSelectPage.handle_choice(self, choice, remove)
+        if remove then
+            Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] - 1
+            if Decksmith.start_args.ds_starting_consumables[choice.config.center.key] <= 0 then
+                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = nil
+            end
+        elseif not Decksmith.start_args.ds_starting_consumables[choice.config.center.key] then
+            Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = 1
+        else
+            Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] + 1
+        end
+    end,
+    choose_random = function(self)
+        local choices = SMODS.RunSelect.Setup.choices[self.key] or {}
+        if self.selection_limit() > SMODS.table_size(choices) then
+            local options = {}
+            for i=1, #self.pool do
+                if self.pool[i].unlocked then
+                    options[#options + 1] = self.pool[i].key
+                end
+            end
+
+            local selected = pseudorandom_element(options, pseudoseed(os.time()))
+            play_sound('whoosh1', math.random()*0.2 + 0.99, 0.35)
+            self:handle_choice({config = {center = {key = selected}}})
+        end
+    end,
+    set_default = function(self, choice)
+        Decksmith.start_args.ds_starting_consumables = {}
+        return nil
+    end,
+})
+
+Decksmith.customize_menu({
     key = 'starting_vouchers',
     grid_size = {2, 2},
     automatic_preview = true,
