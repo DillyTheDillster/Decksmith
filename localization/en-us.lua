@@ -43,6 +43,8 @@ return {
             run_select_ds_general = 'General',
             run_select_ds_money = 'Money',
             run_select_ds_rates = 'Rates',
+            run_select_ds_starting_jokers = 'Jokers',
+            run_select_ds_starting_vouchers = 'Vouchers',
         }
     }
 }

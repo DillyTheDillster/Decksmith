@@ -133,3 +133,97 @@ Decksmith.customize_menu {
         G.GAME.playing_card_rate = tonumber(Decksmith.start_args.ds_pcard_rate) or G.GAME.playing_card_rate
     end
 }
+
+Decksmith.customize_menu({
+    key = 'starting_jokers',
+    automatic_preview = true,
+    random_select = true,
+    double_click_advance = false,
+    selection_limit = function() return tonumber(Decksmith.start_args.ds_joker_slots) or Decksmith.defaults.ds_joker_slots.reset end,
+    generate_pool = function(self) return G.P_CENTER_POOLS.Joker end,
+    selected_text = function(self, selection)
+        if not selection then selection = {} end
+        local selected = SMODS.table_size(selection)
+        return self:selection_limit() - selected .. ' Jokers Remaining'
+    end,
+    start_run = function(self, choice)
+        for k, _ in pairs(choice) do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after', delay = 0.7,
+                func = function()
+                    local c = SMODS.add_card({key = k, skip_materialize = true})
+                    c:start_materialize()
+                    return true
+                end
+            }))
+        end
+    end,
+    handle_choice = function(self, choice, remove)
+        SMODS.RunSelectPage.handle_choice(self, choice, remove)
+        if remove then
+            Decksmith.start_args.ds_starting_jokers[choice.config.center_key] = Decksmith.start_args.ds_starting_jokers[choice.config.center_key] - 1
+            if Decksmith.start_args.ds_starting_jokers[choice.config.center_key] <= 0 then
+                Decksmith.start_args.ds_starting_jokers[choice.config.center_key] = nil
+            end
+        else
+            Decksmith.start_args.ds_starting_jokers[choice.config.center_key] = Decksmith.start_args.ds_starting_jokers[choice.config.center_key] and Decksmith.start_args.ds_starting_jokers[choice.config.center_key] + 1 or 1
+        end
+    end,
+    set_default = function(self, choice)
+        Decksmith.start_args.ds_starting_jokers = {}
+        return nil
+    end,
+})
+
+Decksmith.customize_menu({
+    key = 'starting_vouchers',
+    grid_size = {2, 3},
+    automatic_preview = true,
+    selection_limit = #G.P_CENTER_POOLS.Voucher,
+    include_deck_preview = true,
+    double_click_advance = false,
+    generate_pool = function(self) return G.P_CENTER_POOLS.Voucher end,
+    selected_text = function(self, selection)
+        return localize('run_select_ds_starting_vouchers') -- tried to make this dynamic but gave up lol
+    end,
+    start_run = function(self, choice)
+        for k, _ in pairs(choice) do
+        G.GAME.used_vouchers[k] = true
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after', delay = 0.5,
+            func = function()
+                local voucher_card = SMODS.create_card({area = G.play, key = k})
+                voucher_card:add_to_deck()
+                voucher_card:start_materialize()
+                voucher_card.cost = 0
+                G.play:emplace(voucher_card)
+
+                voucher_card:redeem()
+                
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        voucher_card:start_dissolve()
+                        return true
+                    end
+                }))
+
+                delay(1)
+
+                return true
+            end
+        }))
+        end
+    end,
+    handle_choice = function(self, choice, remove)
+        SMODS.RunSelectPage.handle_choice(self, choice, remove)
+        if remove then
+            Decksmith.start_args.ds_starting_vouchers[choice.config.center_key] = nil
+        else
+            Decksmith.start_args.ds_starting_vouchers[choice.config.center_key] = true
+        end
+    end,
+    set_default = function(self, choice)
+        Decksmith.start_args.ds_starting_vouchers = {}
+        return nil
+    end,
+})

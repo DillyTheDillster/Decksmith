@@ -14,7 +14,7 @@ Decksmith.buttons = {
 
 Decksmith.defaults = {
     -- General
-    ds_joker_slots = {reset = 4, min = 1, max = 25},
+    ds_joker_slots = {reset = 5, min = 1, max = 25},
     ds_consumable_slots = {reset = 2, min = 1, max = 25},
     ds_shop_slots = {reset = 2, min = 1, max = 25},
     ds_winning_ante = {reset = 8, min = 1, max = 38},
