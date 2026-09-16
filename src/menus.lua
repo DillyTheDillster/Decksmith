@@ -263,11 +263,13 @@ Decksmith.customize_menu({
         return localize('run_select_ds_starting_vouchers') -- tried to make this dynamic but gave up lol
     end,
     start_run = function(self, choice)
+        G.TAROT_INTERRUPT = G.STATE
         for k, _ in pairs(choice) do
             G.GAME.used_vouchers[k] = true
             G.E_MANAGER:add_event(Event({
                 trigger = 'after', delay = 0.5,
                 func = function()
+
                     local voucher_card = SMODS.create_card({area = G.play, key = k})
                     voucher_card:add_to_deck()
                     voucher_card:start_materialize()
@@ -284,11 +286,20 @@ Decksmith.customize_menu({
                     }))
 
                     delay(1)
-
+                    
                     return true
                 end
             }))
         end
+        G.E_MANAGER:add_event(Event({
+            blocking = false,
+            func = function()
+            if #G.play.cards ~= 0 then return end
+                G.STATE = G.TAROT_INTERRUPT
+                G.TAROT_INTERRUPT = nil
+                return true
+                end
+        }))
     end,
     handle_choice = function(self, choice, remove)
         SMODS.RunSelectPage.handle_choice(self, choice, remove)
