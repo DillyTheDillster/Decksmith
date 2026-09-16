@@ -7,28 +7,32 @@ Decksmith.buttons = {
         shadow = true,
         atlas = 'tags',
         pos = { x = 0, y = 2},
-        on_click = 'ds_reset'
+        on_click = 'ds_reset',
+        tooltip = 'k_ds_reset'
     },
     reset_all = {
         hover = true,
         shadow = true,
         atlas = 'tags',
         pos = { x = 0, y = 2},
-        on_click = 'ds_reset_all'
+        on_click = 'ds_reset_all',
+        tooltip = 'k_ds_reset_all'
     },
     random = {
         hover = true,
         shadow = true,
         atlas = 'tags',
         pos = { x = 5, y = 3},
-        on_click = 'ds_random'
+        on_click = 'ds_random',
+        tooltip = 'k_ds_randomize'
     },
     random_all = {
         hover = true,
         shadow = true,
         atlas = 'tags',
         pos = { x = 5, y = 3},
-        on_click = 'ds_random_all'
+        on_click = 'ds_random_all',
+        tooltip = 'k_ds_randomize_all'
     },
 }
 

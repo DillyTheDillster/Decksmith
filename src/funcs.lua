@@ -89,12 +89,29 @@ end
 function Decksmith.create_page_button(type, size, key)
     local args = Decksmith.buttons[type] or {}
 
-    local nodes = {}
     if args.atlas then
-        nodes[#nodes+1] = {n=G.UIT.O, config = {object = SMODS.create_sprite(0, 0, size, size, args.atlas, args.pos), shadow = args.shadow, hover = args.hover, align = 'cm'}}
+        return {n=G.UIT.O, config = {
+            object = SMODS.create_sprite(0, 0, size, size, args.atlas, args.pos),
+            tooltip = args.tooltip and {text = {localize(args.tooltip)}},
+            button = args.on_click,
+            hover = args.hover,
+            shadow = args.shadow,
+            ref_value = key,
+            align = 'cm'
+        }}
     end
 
-    return {n=G.UIT.C, config = {minw = size, minh = size, colour = not args.atlas and args.colour, button = args.on_click, hover = args.hover, shadow = args.shadow, r=true, ref_value = key}, nodes = nodes}
+    return {n=G.UIT.C, config = {
+        minw = size,
+        minh = size,
+        colour = args.colour,
+        tooltip = args.tooltip and {text = {localize(args.tooltip)}},
+        button = args.on_click,
+        hover = args.hover,
+        shadow = args.shadow,
+        r=true,
+        ref_value = key
+    }}
 end
 
 G.FUNCS.ds_reset = function(e)

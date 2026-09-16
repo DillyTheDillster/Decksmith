@@ -51,6 +51,12 @@ return {
             run_select_ds_starting_jokers_random = 'Random Joker',
             run_select_ds_starting_consumables_random = 'Random Card',
             run_select_ds_starting_vouchers_random = 'Random Voucher',
+
+            -- Tooltips
+            k_ds_reset = 'Reset Value',
+            k_ds_reset_all = 'Reset All Values',
+            k_ds_randomize = 'Randomize Value',
+            k_ds_randomize_all = 'Randomize All Values',
         },
         v_dictionary = {
             a_ds_jokers_remaining = '#1# Joker(s) remaining',
