@@ -11,9 +11,16 @@ function Controller:queue_R_cursor_press(x, y)
             Decksmith.start_args.banned_keys[press_node.config.center.key] = true
             if SMODS.RunSelect.Setup.choices[press_node.ds_preview_card] then
                 SMODS.RunSelect.Setup.choices[press_node.ds_preview_card][press_node.config.center.key] = nil
-                for _, v in pairs(SMODS.RunSelect.Internals.preview_area.cards) do
+                for _, v in ipairs(SMODS.RunSelect.Internals.preview_area.cards) do
                     if v.config.center.key == press_node.config.center.key then
-                        v:remove()
+                        G.E_MANAGER:add_event(Event({
+                            trigger = 'immediate',
+                            delay = 0,
+                            func = function()
+                                v:remove()
+                                return true;
+                            end
+                        }))
                     end
                 end
                 SMODS.RunSelect.Functions.update_preview_texts(SMODS.RunSelect.Pages[press_node.ds_preview_card])

@@ -134,3 +134,49 @@ end
 function Decksmith.get_consumable_pools()
     return {G.P_CENTER_POOLS.Tarot, G.P_CENTER_POOLS.Planet, G.P_CENTER_POOLS.Spectral}
 end
+
+function Decksmith.handle_duplicate_choices(page_def, choice, remove, start_table_ref)
+    if not Decksmith.start_args.banned_keys or not Decksmith.start_args.banned_keys[choice.config.center.key] then
+        SMODS.RunSelect.Setup.choices[page_def.key] = SMODS.RunSelect.Setup.choices[page_def.key] or {}
+
+        local selection_limit
+        if type(page_def.selection_limit) == 'function' then
+            selection_limit = page_def:selection_limit() or 1
+        else
+            selection_limit = page_def.selection_limit
+        end
+
+        if not remove then
+            if selection_limit > 1 then
+
+                local already_selected = 0
+                for _, count in pairs(SMODS.RunSelect.Setup.choices[page_def.key]) do
+                    already_selected = already_selected + count
+                end
+
+                if already_selected < selection_limit then
+                    if not SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] then
+                        SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] = 1
+                    else
+                        SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] = SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] + 1
+                    end
+                    start_table_ref[choice.config.center.key] = SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key]
+                else
+                    if choice.juice_up then choice:juice_up() end
+                    return
+                end
+            else
+                SMODS.RunSelect.Setup.choices[page_def.key] = choice.config.center.key
+            end
+            if SMODS.RunSelect.Internals.preview_area then SMODS.RunSelect.Functions.populate_preview_ui(page_def.key, choice.config.center.key, page_def.silent) end
+        else
+            SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] = SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] - 1
+            if SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] <= 0 then
+                SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key] = nil
+            end
+            start_table_ref[choice.config.center.key] = SMODS.RunSelect.Setup.choices[page_def.key][choice.config.center.key]
+
+            if SMODS.RunSelect.Internals.preview_area then SMODS.RunSelect.Functions.populate_preview_ui(page_def.key, choice, page_def.silent, true) end
+        end
+    end
+end

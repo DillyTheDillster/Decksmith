@@ -149,19 +149,24 @@ Decksmith.customize_menu({
     generate_pool = function(self) return G.P_CENTER_POOLS.Joker end,
     selected_text = function(self, selection)
         if not selection then selection = {} end
-        local selected = SMODS.table_size(selection)
+        local selected = 0
+        for k, count in pairs(selection) do
+            selected = selected + count
+        end
         return self:selection_limit() - selected .. ' Jokers Remaining'
     end,
     start_run = function(self, choice)
-        for k, _ in pairs(choice) do
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after', delay = 0.7,
-                func = function()
-                    local c = SMODS.add_card({key = k, skip_materialize = true})
-                    c:start_materialize()
-                    return true
-                end
-            }))
+        for k, count in pairs(choice) do
+            for i = 1, count do
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after', delay = 0.7,
+                    func = function()
+                        local c = SMODS.add_card({key = k, skip_materialize = true})
+                        c:start_materialize()
+                        return true
+                    end
+                }))
+            end
         end
     end,
     create_selection_card = function(self, card_key, card_number, area)
@@ -173,19 +178,7 @@ Decksmith.customize_menu({
         return card
     end,
     handle_choice = function(self, choice, remove)
-        if not Decksmith.start_args.banned_keys or not Decksmith.start_args.banned_keys[choice.config.center.key] then
-            SMODS.RunSelectPage.handle_choice(self, choice, remove)
-            if remove then
-                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] - 1
-                if Decksmith.start_args.ds_starting_jokers[choice.config.center.key] <= 0 then
-                    Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = nil
-                end
-            elseif not Decksmith.start_args.ds_starting_jokers[choice.config.center.key] then
-                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = 1
-            else
-                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] + 1
-            end
-        end
+        Decksmith.handle_duplicate_choices(self, choice, remove, Decksmith.start_args.ds_starting_jokers)
     end,
     choose_random = function(self)
         local choices = SMODS.RunSelect.Setup.choices[self.key] or {}
@@ -217,19 +210,24 @@ Decksmith.customize_menu({
     generate_pool = function(self) return SMODS.merge_lists(Decksmith.get_consumable_pools()) end,
     selected_text = function(self, selection)
         if not selection then selection = {} end
-        local selected = SMODS.table_size(selection)
-        return self:selection_limit() - selected .. ' Consumables Remaining'
+        local selected = 0
+        for k, count in pairs(selection) do
+            selected = selected + count
+        end
+        return self:selection_limit() - selected .. ' Jokers Remaining'
     end,
     start_run = function(self, choice)
-        for k, _ in pairs(choice) do
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after', delay = 0.7,
-                func = function()
-                    local c = SMODS.add_card({key = k, skip_materialize = true})
-                    c:start_materialize()
-                    return true
-                end
-            }))
+        for k, count in pairs(choice) do
+            for i = 1, count do
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after', delay = 0.7,
+                    func = function()
+                        local c = SMODS.add_card({key = k, skip_materialize = true})
+                        c:start_materialize()
+                        return true
+                    end
+                }))
+            end
         end
     end,
     create_selection_card = function(self, card_key, card_number, area)
@@ -241,19 +239,7 @@ Decksmith.customize_menu({
         return card
     end,
     handle_choice = function(self, choice, remove)
-        if not Decksmith.start_args.banned_keys or not Decksmith.start_args.banned_keys[choice.config.center.key] then
-            SMODS.RunSelectPage.handle_choice(self, choice, remove)
-            if remove then
-                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] - 1
-                if Decksmith.start_args.ds_starting_consumables[choice.config.center.key] <= 0 then
-                    Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = nil
-                end
-            elseif not Decksmith.start_args.ds_starting_consumables[choice.config.center.key] then
-                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = 1
-            else
-                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] + 1
-            end
-        end
+        Decksmith.handle_duplicate_choices(self, choice, remove, Decksmith.start_args.ds_starting_consumables)
     end,
     choose_random = function(self)
         local choices = SMODS.RunSelect.Setup.choices[self.key] or {}
