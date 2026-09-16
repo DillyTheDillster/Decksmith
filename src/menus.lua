@@ -194,7 +194,7 @@ Decksmith.customize_menu({
 
 Decksmith.customize_menu({
     key = 'starting_vouchers',
-    grid_size = {2, 4},
+    grid_size = {2, 2},
     automatic_preview = true,
     random_select = true,
     selection_limit = #G.P_CENTER_POOLS.Voucher,
@@ -206,30 +206,30 @@ Decksmith.customize_menu({
     end,
     start_run = function(self, choice)
         for k, _ in pairs(choice) do
-        G.GAME.used_vouchers[k] = true
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after', delay = 0.5,
-            func = function()
-                local voucher_card = SMODS.create_card({area = G.play, key = k})
-                voucher_card:add_to_deck()
-                voucher_card:start_materialize()
-                voucher_card.cost = 0
-                G.play:emplace(voucher_card)
+            G.GAME.used_vouchers[k] = true
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after', delay = 0.5,
+                func = function()
+                    local voucher_card = SMODS.create_card({area = G.play, key = k})
+                    voucher_card:add_to_deck()
+                    voucher_card:start_materialize()
+                    voucher_card.cost = 0
+                    G.play:emplace(voucher_card)
 
-                voucher_card:redeem()
-                
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        voucher_card:start_dissolve()
-                        return true
-                    end
-                }))
+                    voucher_card:redeem()
+                    
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            voucher_card:start_dissolve()
+                            return true
+                        end
+                    }))
 
-                delay(1)
+                    delay(1)
 
-                return true
-            end
-        }))
+                    return true
+                end
+            }))
         end
     end,
     handle_choice = function(self, choice, remove)
