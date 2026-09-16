@@ -1,0 +1,27 @@
+-- Ban items on right click
+local controller_queue_R_cursor_press_ref = Controller.queue_R_cursor_press
+function Controller:queue_R_cursor_press(x, y)
+    controller_queue_R_cursor_press_ref(self, x, y)
+    local press_node = self.hovering.target or self.focused.target
+    if press_node and press_node:is(Card) and press_node.ds_preview_card and press_node.area ~= SMODS.RunSelect.Internals.preview_area then
+        play_sound('button', 1, 0.3)
+        press_node:juice_up()
+        Decksmith.start_args.banned_keys = Decksmith.start_args.banned_keys or {}
+        if not Decksmith.start_args.banned_keys[press_node.config.center.key] then
+            Decksmith.start_args.banned_keys[press_node.config.center.key] = true
+            if SMODS.RunSelect.Setup.choices[press_node.ds_preview_card] then
+                SMODS.RunSelect.Setup.choices[press_node.ds_preview_card][press_node.config.center.key] = nil
+                for _, v in pairs(SMODS.RunSelect.Internals.preview_area.cards) do
+                    if v.config.center.key == press_node.config.center.key then
+                        v:remove()
+                    end
+                end
+                SMODS.RunSelect.Functions.update_preview_texts(SMODS.RunSelect.Pages[press_node.ds_preview_card])
+            end
+            press_node.debuff = true
+        else
+            Decksmith.start_args.banned_keys[press_node.config.center.key] = nil
+            press_node.debuff = nil
+        end
+    end
+end

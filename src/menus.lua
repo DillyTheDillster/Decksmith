@@ -48,6 +48,12 @@ Decksmith.customize_menu {
             end
         }))
 
+        -- Do this here since this is the first page
+        if Decksmith.start_args.banned_keys and next(Decksmith.start_args.banned_keys) then
+            for k, _ in pairs(Decksmith.start_args.banned_keys) do
+                G.GAME.banned_keys[k] = true
+            end
+        end
     end
 }
 
@@ -158,17 +164,27 @@ Decksmith.customize_menu({
             }))
         end
     end,
+    create_selection_card = function(self, card_key, card_number, area)
+        local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.j_joker)
+        card.ds_preview_card = self.key
+        if Decksmith.start_args.banned_keys and Decksmith.start_args.banned_keys[card_key] then
+            card.debuff = true
+        end
+        return card
+    end,
     handle_choice = function(self, choice, remove)
-        SMODS.RunSelectPage.handle_choice(self, choice, remove)
-        if remove then
-            Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] - 1
-            if Decksmith.start_args.ds_starting_jokers[choice.config.center.key] <= 0 then
-                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = nil
+        if not Decksmith.start_args.banned_keys or not Decksmith.start_args.banned_keys[choice.config.center.key] then
+            SMODS.RunSelectPage.handle_choice(self, choice, remove)
+            if remove then
+                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] - 1
+                if Decksmith.start_args.ds_starting_jokers[choice.config.center.key] <= 0 then
+                    Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = nil
+                end
+            elseif not Decksmith.start_args.ds_starting_jokers[choice.config.center.key] then
+                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = 1
+            else
+                Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] + 1
             end
-        elseif not Decksmith.start_args.ds_starting_jokers[choice.config.center.key] then
-            Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = 1
-        else
-            Decksmith.start_args.ds_starting_jokers[choice.config.center.key] = Decksmith.start_args.ds_starting_jokers[choice.config.center.key] + 1
         end
     end,
     choose_random = function(self)
@@ -216,17 +232,27 @@ Decksmith.customize_menu({
             }))
         end
     end,
+    create_selection_card = function(self, card_key, card_number, area)
+        local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.c_strength)
+        card.ds_preview_card = self.key
+        if Decksmith.start_args.banned_keys and Decksmith.start_args.banned_keys[card_key] then
+            card.debuff = true
+        end
+        return card
+    end,
     handle_choice = function(self, choice, remove)
-        SMODS.RunSelectPage.handle_choice(self, choice, remove)
-        if remove then
-            Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] - 1
-            if Decksmith.start_args.ds_starting_consumables[choice.config.center.key] <= 0 then
-                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = nil
+        if not Decksmith.start_args.banned_keys or not Decksmith.start_args.banned_keys[choice.config.center.key] then
+            SMODS.RunSelectPage.handle_choice(self, choice, remove)
+            if remove then
+                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] - 1
+                if Decksmith.start_args.ds_starting_consumables[choice.config.center.key] <= 0 then
+                    Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = nil
+                end
+            elseif not Decksmith.start_args.ds_starting_consumables[choice.config.center.key] then
+                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = 1
+            else
+                Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] + 1
             end
-        elseif not Decksmith.start_args.ds_starting_consumables[choice.config.center.key] then
-            Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = 1
-        else
-            Decksmith.start_args.ds_starting_consumables[choice.config.center.key] = Decksmith.start_args.ds_starting_consumables[choice.config.center.key] + 1
         end
     end,
     choose_random = function(self)
@@ -301,12 +327,22 @@ Decksmith.customize_menu({
                 end
         }))
     end,
+    create_selection_card = function(self, card_key, card_number, area)
+        local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.v_blank)
+        card.ds_preview_card = self.key
+        if Decksmith.start_args.banned_keys and Decksmith.start_args.banned_keys[card_key] then
+            card.debuff = true
+        end
+        return card
+    end,
     handle_choice = function(self, choice, remove)
-        SMODS.RunSelectPage.handle_choice(self, choice, remove)
-        if remove then
-            Decksmith.start_args.ds_starting_vouchers[choice.config.center.key] = nil
-        else
-            Decksmith.start_args.ds_starting_vouchers[choice.config.center.key] = true
+        if not Decksmith.start_args.banned_keys or not Decksmith.start_args.banned_keys[choice.config.center.key] then
+            SMODS.RunSelectPage.handle_choice(self, choice, remove)
+            if remove then
+                Decksmith.start_args.ds_starting_vouchers[choice.config.center.key] = nil
+            else
+                Decksmith.start_args.ds_starting_vouchers[choice.config.center.key] = true
+            end
         end
     end,
     choose_random = function(self)
