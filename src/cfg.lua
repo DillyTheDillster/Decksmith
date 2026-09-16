@@ -3,19 +3,31 @@ Decksmith.page_height = 6.8
 
 Decksmith.buttons = {
     reset = {
-        colour = G.C.GOLD,
+        hover = true,
+        shadow = true,
+        atlas = 'tags',
+        pos = { x = 0, y = 2},
         on_click = 'ds_reset'
     },
     reset_all = {
-        colour = G.C.GOLD,
+        hover = true,
+        shadow = true,
+        atlas = 'tags',
+        pos = { x = 0, y = 2},
         on_click = 'ds_reset_all'
     },
     random = {
-        colour = G.C.GREEN,
+        hover = true,
+        shadow = true,
+        atlas = 'tags',
+        pos = { x = 5, y = 3},
         on_click = 'ds_random'
     },
     random_all = {
-        colour = G.C.GREEN,
+        hover = true,
+        shadow = true,
+        atlas = 'tags',
+        pos = { x = 5, y = 3},
         on_click = 'ds_random_all'
     },
 }

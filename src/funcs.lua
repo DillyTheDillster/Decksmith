@@ -89,7 +89,12 @@ end
 function Decksmith.create_page_button(type, size, key)
     local args = Decksmith.buttons[type] or {}
 
-    return {n=G.UIT.C, config = {minw = size, minh = size, colour = args.colour, button = args.on_click, r=true, ref_value = key}}
+    local nodes = {}
+    if args.atlas then
+        nodes[#nodes+1] = {n=G.UIT.O, config = {object = SMODS.create_sprite(0, 0, size, size, args.atlas, args.pos), shadow = args.shadow, align = 'cm'}}
+    end
+
+    return {n=G.UIT.C, config = {minw = size, minh = size, colour = not args.atlas and args.colour, button = args.on_click, hover = args.hover, shadow = args.shadow, r=true, ref_value = key}, nodes = nodes}
 end
 
 -- TODO: implement functions
