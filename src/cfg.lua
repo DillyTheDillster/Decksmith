@@ -6,9 +6,17 @@ Decksmith.buttons = {
         colour = G.C.GOLD,
         on_click = 'ds_reset'
     },
+    reset_all = {
+        colour = G.C.GOLD,
+        on_click = 'ds_reset_all'
+    },
     random = {
         colour = G.C.GREEN,
         on_click = 'ds_random'
+    },
+    random_all = {
+        colour = G.C.GREEN,
+        on_click = 'ds_random_all'
     },
 }
 

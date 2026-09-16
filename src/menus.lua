@@ -14,7 +14,7 @@ Decksmith.customize_menu {
 
         return Decksmith.create_menu_page({
             key = 'k_ds_general',
-            no_reset = true, -- EXAMPLE
+            -- no_reset = true, -- EXAMPLE
             options = {
                 {'ds_joker_slots'},
                 {'ds_consumable_slots'},
@@ -67,8 +67,8 @@ Decksmith.customize_menu {
         return Decksmith.create_menu_page({
             key = 'k_ds_money',
             options = {
-                {'ds_starting_dollars', {no_random = true}}, -- EXAMPLE
-                {'ds_interest_amount', {no_reset = true}}, -- EXAMPLE
+                {'ds_starting_dollars', --[[ {no_random = true} ]]}, -- EXAMPLE
+                {'ds_interest_amount', --[[ {no_reset = true} ]]}, -- EXAMPLE
                 {'ds_interest_cap'},
                 {'spacer'},
                 {'ds_dollars_per_hand'},
@@ -111,7 +111,7 @@ Decksmith.customize_menu {
 
         return Decksmith.create_menu_page({
             key = 'k_ds_rates',
-            no_random = true, -- EXAMPLE
+            -- no_random = true, -- EXAMPLE
             options = {
                 {'ds_joker_rate'},
                 {'ds_tarot_rate'},
