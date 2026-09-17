@@ -6,7 +6,7 @@ Decksmith.buttons = {
         hover = true,
         shadow = true,
         atlas = 'tags',
-        pos = { x = 0, y = 2},
+        pos = { x = 2, y = 3 },
         on_click = 'ds_reset',
         tooltip = 'k_ds_reset'
     },
@@ -14,7 +14,7 @@ Decksmith.buttons = {
         hover = true,
         shadow = true,
         atlas = 'tags',
-        pos = { x = 0, y = 2},
+        pos = { x = 2, y = 3 },
         on_click = 'ds_reset_all',
         tooltip = 'k_ds_reset_all'
     },
@@ -22,7 +22,7 @@ Decksmith.buttons = {
         hover = true,
         shadow = true,
         atlas = 'tags',
-        pos = { x = 5, y = 3},
+        pos = { x = 5, y = 3 },
         on_click = 'ds_random',
         tooltip = 'k_ds_randomize'
     },
@@ -30,7 +30,7 @@ Decksmith.buttons = {
         hover = true,
         shadow = true,
         atlas = 'tags',
-        pos = { x = 5, y = 3},
+        pos = { x = 5, y = 3 },
         on_click = 'ds_random_all',
         tooltip = 'k_ds_randomize_all'
     },
