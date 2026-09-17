@@ -31,15 +31,82 @@ function Decksmith.text_input_element(value, args)
             }},
             {n=G.UIT.C, config = {align='cm'}, nodes = {
                 {n=G.UIT.C, config={minw = 0.2}},
-                Decksmith.create_page_button(not args.no_random and 'random', Decksmith.button_size/1.5, value),
+                Decksmith.create_value_button(not args.no_random and 'random', Decksmith.button_size/1.5, value),
                 {n=G.UIT.C, config={minw = 0.1}},
-                Decksmith.create_page_button(not args.no_reset and 'reset', Decksmith.button_size/1.5, value),
+                Decksmith.create_value_button(not args.no_reset and 'reset', Decksmith.button_size/1.5, value),
             }}
         }
     }
 
     if not args.no_random then table.insert(Decksmith.this_page_random_options, value) end
     if not args.no_reset then table.insert(Decksmith.this_page_reset_options, value) end
+
+    return t
+end
+
+function Decksmith.toggle_element(value, args)
+    args = args or {}
+    args.colour = args.colour or G.C.BLUE
+    local label = args.label or G.localization.misc.dictionary['k_'..value] or value
+    label = type(label) == 'string' and {label} or label
+
+    local label_nodes = {}
+
+    for _, v in pairs(label) do
+        table.insert(label_nodes, {n=G.UIT.R, config = {align = 'cm'}, nodes = {{n=G.UIT.T, config = {text = v, scale = args.label_size or 0.37, colour = args.label_colour or G.C.WHITE}}}})
+    end
+
+    local t = {
+        n=G.UIT.R, config = { align = 'cr', padding = 0.1}, nodes = {
+            {n=G.UIT.C, config = {align = 'cl', padding = 0.1, minw = 3.8}, nodes = label_nodes},
+            {n=G.UIT.C, config = {align = 'cm'}, nodes = {
+                create_toggle {
+                    col = true,
+                    id = value .. '_input',
+                    label = '',
+                    scale = args.scale or 1,
+                    w = args.w or 1.5,
+                    h = args.h or 0.5,
+                    ref_table = args.ref_table or Decksmith.start_args,
+                    ref_value = value,
+                    colour = args.colour,
+                    shadow = true,
+                }
+            }},
+            {n=G.UIT.C, config = {align='cm'}, nodes = {
+                {n=G.UIT.C, config={minw = 0.2}},
+                Decksmith.create_value_button(not args.no_random and 'random', Decksmith.button_size/1.5, value),
+                {n=G.UIT.C, config={minw = 0.1}},
+                Decksmith.create_value_button(not args.no_reset and 'reset', Decksmith.button_size/1.5, value),
+            }}
+        }
+    }
+
+    if not args.no_random then table.insert(Decksmith.this_page_random_options, value) end
+    if not args.no_reset then table.insert(Decksmith.this_page_reset_options, value) end
+
+    return t
+end
+
+function Decksmith.button_element(value, args)
+    args = args or {}
+    args.colour = args.colour or G.C.BLUE
+    local label = args.label or G.localization.misc.dictionary['k_'..value] or value
+    label = type(label) == 'string' and {label} or label
+
+    local btn_text = ''
+
+    for i, v in ipairs(label) do
+        btn_text = btn_text .. i == 1 and '' or '' .. v
+    end
+
+    local t = {
+        n=G.UIT.R, config = { align = 'cm', minh = 2}, nodes = {
+            {n=G.UIT.R, config = {align = 'cm', colour = args.colour or G.C.BLUE, r = 0.1, hover = true, button = args.button or value, func = args.func, ref_value = value, miw = 3, minh = 0.5, padding = 0.05}, nodes = {
+                {n=G.UIT.T, config = {text = btn_text, colour = args.colour or G.C.UI.TEXT_LIGHT}}
+            }}
+        }
+    }
 
     return t
 end
@@ -58,7 +125,17 @@ function Decksmith.create_menu_page(args)
     
     for _, option in ipairs(args.options) do
         -- print(option)
-        options.nodes[#options.nodes + 1] = option[1] == 'spacer' and {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.text_input_element(option[1], option[2])
+        if option[2] and option[2].type then
+            if option[2].type == 'text_input' then
+                options.nodes[#options.nodes + 1] = {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.text_input_element(option[1], option[2])
+            elseif option[2].type == 'toggle' then
+                options.nodes[#options.nodes + 1] = {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.toggle_element(option[1], option[2])
+            elseif option[2].type == 'button' then
+                options.nodes[#options.nodes + 1] = {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.button_element(option[1], option[2])
+            end
+        else
+            options.nodes[#options.nodes + 1] = option[1] == 'spacer' and {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.text_input_element(option[1], option[2])
+        end
     end                        
 
     return 
@@ -73,9 +150,9 @@ function Decksmith.create_menu_page(args)
                             {n=G.UIT.T, config = {text = localize(args.key), scale = 0.8, colour = G.C.L_BLACK, vert = true}}
                         }},
                         {n=G.UIT.R, config={minh=1, align='cm'}, nodes={ -- whole page random/reset buttons
-                            {n=G.UIT.R, nodes = {Decksmith.create_page_button(not args.no_random and 'random_all', Decksmith.button_size, args.key)}},
+                            {n=G.UIT.R, nodes = {Decksmith.create_value_button(not args.no_random and 'random_all', Decksmith.button_size, args.key)}},
                             {n=G.UIT.R, config={minh = 0.1}}, -- spacer
-                            {n=G.UIT.R, nodes = {Decksmith.create_page_button(not args.no_reset and 'reset_all', Decksmith.button_size, args.key)}},
+                            {n=G.UIT.R, nodes = {Decksmith.create_value_button(not args.no_reset and 'reset_all', Decksmith.button_size, args.key)}},
                         }}
                     }},
                     {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}}, -- line
@@ -87,7 +164,7 @@ function Decksmith.create_menu_page(args)
         }}
 end
 
-function Decksmith.create_page_button(type, size, key)
+function Decksmith.create_value_button(type, size, key)
     local args = Decksmith.buttons[type] or {}
 
     if args.atlas then
