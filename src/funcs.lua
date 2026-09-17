@@ -18,7 +18,7 @@ function Decksmith.text_input_element(value, args)
             {n=G.UIT.C, config = {align = 'cm'}, nodes = {
                 create_text_input {
                     id = value .. '_input',
-                    prompt_text = args.text or args.label,
+                    prompt_text = Decksmith.defaults[value].reset .. '',
                     w = args.w or 1.5,
                     h = args.h or 0.5,
                     all_caps = args.all_caps or false,
@@ -203,14 +203,14 @@ end
 
 G.FUNCS.ds_reset = function(e)
     --  print('[NYI] Reset',e.config.ref_value)
-    Decksmith.start_args[e.config.ref_value] = Decksmith.defaults[e.config.ref_value].reset
+    Decksmith.start_args[e.config.ref_value] = ''
     Decksmith.reset_page()
 end
 
 G.FUNCS.ds_reset_all = function(e)
     --  print('[NYI] Reset',e.config.ref_value)
     for _, v in pairs(Decksmith.this_page_reset_options) do
-        Decksmith.start_args[v] = Decksmith.defaults[v].reset
+        Decksmith.start_args[v] = ''
     end
     Decksmith.reset_page()
 end

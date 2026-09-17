@@ -1,6 +1,14 @@
 Decksmith.customize_menu = SMODS.RunSelectPage:extend {
     automatic_preview = false,
     optional = function() return SMODS.RunSelect.Setup.choices.deck_choice == 'b_ds_custom' end,
+    set_default = function(self, choice)
+        if self.ds_args then
+            for _, v in pairs(self.ds_args) do
+                Decksmith.start_args[v] = Decksmith.start_args[v] or ''
+            end
+        end
+        return nil
+    end
 }
 
 --[[ Decksmith.customize_menu {
@@ -19,13 +27,14 @@ Decksmith.customize_menu = SMODS.RunSelectPage:extend {
 
 Decksmith.customize_menu {
     key = 'general',
+    ds_args = {
+        'ds_joker_slots',
+        'ds_consumable_slots',
+        'ds_shop_slots',
+        'ds_winning_ante',
+        'ds_ante_scaling',
+    },
     definition = function(self)
-        Decksmith.start_args.ds_joker_slots = tonumber(Decksmith.start_args.ds_joker_slots) or 5
-        Decksmith.start_args.ds_consumable_slots = tonumber(Decksmith.start_args.ds_consumable_slots) or 2
-        Decksmith.start_args.ds_shop_slots = tonumber(Decksmith.start_args.ds_shop_slots) or 2
-        Decksmith.start_args.ds_ante_scaling = tonumber(Decksmith.start_args.ds_ante_scaling) or 1
-        Decksmith.start_args.ds_winning_ante = tonumber(Decksmith.start_args.ds_winning_ante) or 8
-
         return Decksmith.create_menu_page({
             key = 'k_ds_general',
             -- no_reset = true, -- EXAMPLE
@@ -41,8 +50,8 @@ Decksmith.customize_menu {
     end,
     start_run = function(self, choice)
         -- Ante stuff
-        G.GAME.starting_params.ante_scaling = tonumber(Decksmith.start_args.ds_ante_scaling) or 1
-        G.GAME.win_ante = to_big(tonumber(Decksmith.start_args.ds_winning_ante) or 8)
+        G.GAME.starting_params.ante_scaling = tonumber(Decksmith.start_args.ds_ante_scaling) or G.GAME.starting_params.ante_scaling
+        G.GAME.win_ante = tonumber(Decksmith.start_args.ds_winning_ante) and to_big(tonumber(Decksmith.start_args.ds_winning_ante)) or G.GAME.win_ante
 
         -- Area changing
         G.E_MANAGER:add_event(Event({
@@ -68,22 +77,22 @@ Decksmith.customize_menu {
                 G.GAME.banned_keys[k] = true
             end
         end
-    end
+    end,
 }
 
 Decksmith.customize_menu {
     key = 'money',
+    ds_args = {
+        'ds_starting_dollars',
+        'ds_interest_amount',
+        'ds_interest_cap',
+        'ds_dollars_per_hand',
+        'ds_dollars_per_discard',
+        'ds_discard_cost',
+        'ds_reroll_cost',
+        'ds_discount_percentage',
+    },
     definition = function(self)
-        Decksmith.start_args.ds_starting_dollars = tonumber(Decksmith.start_args.ds_starting_dollars) or 4
-        Decksmith.start_args.ds_reroll_cost = tonumber(Decksmith.start_args.ds_reroll_cost) or 5
-        Decksmith.start_args.ds_dollars_per_hand = tonumber(Decksmith.start_args.ds_dollars_per_hand) or 1
-        Decksmith.start_args.ds_dollars_per_discard = tonumber(Decksmith.start_args.ds_dollars_per_discard) or 0
-        Decksmith.start_args.ds_interest_amount = tonumber(Decksmith.start_args.ds_interest_amount) or 1
-        Decksmith.start_args.ds_interest_cap = tonumber(Decksmith.start_args.ds_interest_cap) or 5
-        Decksmith.start_args.ds_discount_percentage = tonumber(Decksmith.start_args.ds_discount_percentage) or 0
-        Decksmith.start_args.ds_discard_cost = tonumber(Decksmith.start_args.ds_discard_cost) or 0
-
-
         return Decksmith.create_menu_page({
             key = 'k_ds_money',
             options = {
@@ -117,18 +126,19 @@ Decksmith.customize_menu {
 
         G.GAME.discount_percent = tonumber(Decksmith.start_args.ds_discount_percentage) or G.GAME.discount_percent
         G.GAME.modifiers.discard_cost = tonumber(Decksmith.start_args.ds_discard_cost) or G.GAME.modifiers.discard_cost
-    end
+    end,
 }
 
 Decksmith.customize_menu {
     key = 'rates',
+    ds_args = {
+        'ds_joker_rate',
+        'ds_tarot_rate',
+        'ds_planet_rate',
+        'ds_spectral_rate',
+        'ds_pcard_rate',
+    },
     definition = function(self)
-        Decksmith.start_args.ds_joker_rate = tonumber(Decksmith.start_args.ds_joker_rate) or 20
-        Decksmith.start_args.ds_tarot_rate = tonumber(Decksmith.start_args.ds_tarot_rate) or 4
-        Decksmith.start_args.ds_planet_rate = tonumber(Decksmith.start_args.ds_planet_rate) or 4
-        Decksmith.start_args.ds_spectral_rate = tonumber(Decksmith.start_args.ds_spectral_rate) or 0
-        Decksmith.start_args.ds_pcard_rate = tonumber(Decksmith.start_args.ds_pcard_rate) or 0
-
         return Decksmith.create_menu_page({
             key = 'k_ds_rates',
             -- no_random = true, -- EXAMPLE
@@ -151,7 +161,7 @@ Decksmith.customize_menu {
         G.GAME.spectral_rate = tonumber(Decksmith.start_args.ds_spectral_rate)or G.GAME.spectral_rate
 
         G.GAME.playing_card_rate = tonumber(Decksmith.start_args.ds_pcard_rate) or G.GAME.playing_card_rate
-    end
+    end,
 }
 
 Decksmith.customize_menu({
