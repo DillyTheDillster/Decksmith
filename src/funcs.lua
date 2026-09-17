@@ -286,3 +286,26 @@ function Decksmith.handle_duplicate_choices(page_def, choice, remove, start_tabl
         end
     end
 end
+
+function Decksmith.retrieve_valid_decks()
+    local filedata = SMODS.NFS.getDirectoryItemsInfo(Decksmith.decks_path)
+    local valid_decks = {}
+    for _, v in pairs(filedata) do
+        if v.type == 'file' and v.name and string.sub(v.name, -5, -1) == '.json' then
+            table.insert(valid_decks, v)
+        end
+    end
+    return valid_decks
+end
+
+function Decksmith.get_valid_deck_names()
+    
+end
+
+function Decksmith.get_deck_data(path)
+
+end
+
+function Decksmith.set_deck_preset(path)
+    
+end

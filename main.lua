@@ -1,6 +1,7 @@
 Decksmith = {}
 Decksmith.start_args = {}
 Decksmith.mod = SMODS.current_mod
+Decksmith.decks_path = SMODS.current_mod.path .. 'decks/'
 
 assert(SMODS.load_file('src/cfg.lua'))()
 assert(SMODS.load_file('src/deck.lua'))()
