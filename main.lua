@@ -1,8 +1,10 @@
 Decksmith = {}
 Decksmith.start_args = {}
 Decksmith.mod = SMODS.current_mod
-Decksmith.decks_path = SMODS.current_mod.path .. 'decks/'
 
+if not love.filesystem.getInfo('Decksmith_decks') then love.filesystem.createDirectory('Decksmith_decks') end
+
+assert(SMODS.load_file('src/file_io.lua'))()
 assert(SMODS.load_file('src/cfg.lua'))()
 assert(SMODS.load_file('src/deck.lua'))()
 assert(SMODS.load_file('src/funcs.lua'))()

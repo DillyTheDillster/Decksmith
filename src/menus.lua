@@ -220,8 +220,8 @@ Decksmith.customize_menu({
         end
     end,
     set_default = function(self, choice)
-        Decksmith.start_args.ds_starting_jokers = {}
-        return nil
+        Decksmith.start_args.ds_starting_jokers = Decksmith.start_args.ds_starting_jokers or {}
+        return Decksmith.start_args.ds_starting_jokers
     end,
 })
 
@@ -281,8 +281,8 @@ Decksmith.customize_menu({
         end
     end,
     set_default = function(self, choice)
-        Decksmith.start_args.ds_starting_consumables = {}
-        return nil
+        Decksmith.start_args.ds_starting_consumables = Decksmith.start_args.ds_starting_consumables or {}
+        return Decksmith.start_args.ds_starting_consumables
     end,
 })
 
@@ -375,8 +375,8 @@ Decksmith.customize_menu({
         end
     end,
     set_default = function(self, choice)
-        Decksmith.start_args.ds_starting_vouchers = {}
-        return nil
+        Decksmith.start_args.ds_starting_vouchers = Decksmith.start_args.ds_starting_vouchers or {}
+        return Decksmith.start_args.ds_starting_vouchers
     end,
 })
 
