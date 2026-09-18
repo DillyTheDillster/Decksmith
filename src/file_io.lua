@@ -92,5 +92,9 @@ function Decksmith.write_deck(path)
     end 
     file:write('}')
     file:close()
+    G.FUNCS.ds_open_decks_folder()
+end
+
+function G.FUNCS.ds_open_decks_folder()
     love.system.openURL(love.filesystem.getSaveDirectory() .. '/Decksmith_decks/')
 end

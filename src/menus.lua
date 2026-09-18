@@ -13,6 +13,7 @@ Decksmith.customize_menu = SMODS.RunSelectPage:extend {
 
 --[[ Decksmith.customize_menu {
     key = 'import',
+    optional = function() return SMODS.RunSelect.Setup.choices.deck_choice == 'b_ds_custom' and #Decksmith.get_valid_deck_names() > 0 end,
     definition = function(self)
         return Decksmith.create_menu_page({
             key = 'k_ds_import',
@@ -391,10 +392,6 @@ Decksmith.customize_menu({
                 
             }
         })
-    end,
-    set_default = function(self, choice)
-        Decksmith.start_args.modifiers = {}
-        return nil
     end,
 } ]]
 
