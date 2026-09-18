@@ -28,12 +28,27 @@ function Decksmith.get_deck_data(path)
     return assert(setfenv(loadstring(SMODS.NFS.read('Decksmith_decks/' .. path)), {}))()
 end
 
+-- Hook this to add pages that need to be reset on deck import
+function Decksmith.pages_to_reset_defaults()
+    return {
+        ['ds_starting_jokers'] = true,
+        ['ds_starting_consumables'] = true,
+        ['ds_starting_vouchers'] = true,
+    }
+end
+
 -- Uses deck data to set deck preset
 function Decksmith.set_deck_preset(path)
     local deck_data = Decksmith.get_deck_data(path)
     for k, v in pairs(deck_data) do
         if v ~= '' then
             Decksmith.start_args[k] = v
+        end
+    end
+    local reset_pages = Decksmith.pages_to_reset_defaults()
+    for key, page in pairs(SMODS.RunSelect.Pages) do
+        if reset_pages[key] then
+            SMODS.RunSelect.Setup.choices[key] = page:set_default(G.PROFILES[G.SETTINGS.profile].last_choices[key])
         end
     end
 end
