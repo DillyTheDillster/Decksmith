@@ -8,6 +8,16 @@ return {
                     'own deck!'
                 }
             }
+        },
+        Other = {
+            ds_warning_text = {
+                text = {
+                    "{element:1} {s:2.0,C:warning_text}WARNING!!{} {element:2}",
+                    " ",
+                    "{s:1.6}A deck saved under the file name {C:attention,s:1.6}#1#{}",
+                    "{s:1.6}already exists. Would you like to overwrite this deck?"
+                }
+            }
         }
     },
     misc = {
@@ -63,6 +73,10 @@ return {
             k_ds_reset_all = 'Reset All Values',
             k_ds_randomize = 'Randomize Value',
             k_ds_randomize_all = 'Randomize All Values',
+
+            -- Buttons
+            k_ds_continue = 'Continue',
+            k_ds_cancel = 'Cancel'
         },
         v_dictionary = {
             a_ds_jokers_remaining = '#1# Joker(s) remaining',

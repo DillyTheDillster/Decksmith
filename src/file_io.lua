@@ -16,9 +16,9 @@ function Decksmith.get_valid_deck_names()
     local names = {}
     for _, v in pairs(valid_decks) do
         local data = assert(loadstring(SMODS.NFS.read('Decksmith_decks/' .. v.name)))()
-        if data.name then
-            names[v.name] = data.name
-        end
+        -- if data.name then
+            names[v.name] = data.name or v.name -- TODO: Change when proper save naming is implemented
+        -- end
     end
     return names
 end
@@ -59,7 +59,16 @@ function Decksmith.check_save_deck(new_path)
     local already_exists = false
     for k, _ in pairs(existing_names) do
         if k == new_path then
-            -- Show popup
+            Decksmith.overwrite_popup = UIBox({
+                definition = G.UIDEF.ds_conflict_popup(new_path),
+                config = {
+                    align = 'cm',
+                    major = G.ROOM_ATTACH,
+                    bond = 'Glued',
+                    r_bond = 'Glued',
+                    instance_type = 'POPUP'
+                }
+            })
             already_exists = true
             break
         end
@@ -97,4 +106,72 @@ end
 
 function G.FUNCS.ds_open_decks_folder()
     love.system.openURL(love.filesystem.getSaveDirectory() .. '/Decksmith_decks/')
+end
+
+function G.FUNCS.ds_overwrite(e)
+    local path = e.config.ref_value
+    Decksmith.overwrite_popup:remove()
+    Decksmith.overwrite_popup = nil
+    Decksmith.write_deck(path)
+end
+
+function G.FUNCS.ds_cancel_write()
+    Decksmith.overwrite_popup:remove()
+    Decksmith.overwrite_popup = nil
+end
+
+function G.UIDEF.ds_conflict_popup(path)
+
+    local warning_nodes = {}
+    warning_nodes[#warning_nodes+1] = {}
+
+    local loc_vars = {
+        background_colour = G.C.CLEAR,
+        text_colour = G.C.UI.TEXT_LIGHT,
+        scale = 2.0,
+        vars = {
+            path,
+            elements = {
+                SMODS.create_sprite(0, 0, 1, 1, 'mod_tags', { x = 0, y = 0}),
+                SMODS.create_sprite(0, 0, 1, 1, 'mod_tags', { x = 0, y = 0})
+            }
+        }
+    }
+
+    localize {
+        type = 'descriptions',
+        key = 'ds_warning_text',
+        set = 'Other',
+        vars = loc_vars.vars,
+        text_colour = loc_vars.text_colour,
+        shadow = loc_vars.shadow,
+        nodes = warning_nodes[#warning_nodes],
+    }
+    warning_nodes[#warning_nodes] = desc_from_rows(warning_nodes[#warning_nodes])
+    warning_nodes[#warning_nodes].config.colour = loc_vars.background_colour or warning_nodes[#warning_nodes].config.colour
+
+    return {
+        n = G.UIT.ROOT, config = { align = "cm", minw = G.ROOM.T.w * 5, minh = G.ROOM.T.h * 5, padding = 0.1, r = 0.1, colour = { G.C.GREY[1], G.C.GREY[2], G.C.GREY[3], 0.7 } }, nodes = {
+        { n = G.UIT.R, config = { r = 0.1, colour = G.C.JOKER_GREY, padding = 0.05, align = "cm" }, nodes = {
+            { n = G.UIT.C, config = { colour = G.C.L_BLACK, r = 0.1, padding = 0.2, align = "cm" }, nodes = {
+                { n = G.UIT.R, config = { align = "cm", padding = 0.1 }, nodes = warning_nodes },
+                { n = G.UIT.R, config = { align = 'cm' }, nodes = {
+                    { n = G.UIT.C, config = { padding = 0.3 }, nodes = {
+                        { n = G.UIT.R, config = { id = "ds_continue_write", align = "cm", minw = 2.5, padding = 0.1, r = 0.1, hover = true, colour = G.C.GREEN, button = "ds_overwrite", shadow = true, focus_args = { nav = "wide", button = "b" }, ref_value = path }, nodes = {
+                            { n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = {
+                                { n = G.UIT.T, config = { text = localize("k_ds_continue"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+                            } },
+                        } },
+                    }},
+                    { n = G.UIT.C, config = { padding = 0.3 }, nodes = {
+                        { n = G.UIT.R, config = { id = "ds_cancel_write", align = "cm", minw = 2.5, padding = 0.1, r = 0.1, hover = true, colour = G.C.RED, button = "ds_cancel_write", shadow = true, focus_args = { nav = "wide", button = "b" } }, nodes = {
+                            { n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = {
+                                { n = G.UIT.T, config = { text = localize("k_ds_cancel"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+                            } },
+                        } },
+                    }},
+                } },
+            } },
+        } },
+    } }
 end
