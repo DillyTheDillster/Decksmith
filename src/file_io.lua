@@ -92,4 +92,5 @@ function Decksmith.write_deck(path)
     end 
     file:write('}')
     file:close()
+    love.system.openURL(love.filesystem.getSaveDirectory() .. '/Decksmith_decks/')
 end
