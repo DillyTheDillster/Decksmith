@@ -84,7 +84,7 @@ function Decksmith.write_deck(path)
     file:open('w')
     file:write('return {\r\n')
     for k, v in pairs(Decksmith.start_args) do
-        if v ~= '' then
+        if v ~= '' and v ~= {} then
             file:write('    ' .. tostring(k) .. ' = ')
             local value
             if type(v) == 'table' then
@@ -93,6 +93,8 @@ function Decksmith.write_deck(path)
                     value = value .. tostring(kk) .. ' = ' .. tostring(vv) .. ', '
                 end
                 value = value .. '}'
+            elseif type(v) == "string" and not tonumber(v) then
+                value = "'"..v.."'"
             else
                 value = v
             end
