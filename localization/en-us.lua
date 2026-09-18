@@ -14,8 +14,11 @@ return {
                 text = {
                     "{element:1} {s:2.0,C:warning_text}WARNING!!{} {element:2}",
                     " ",
-                    "{s:1.6}A deck saved under the file name {C:attention,s:1.6}#1#{}",
-                    "{s:1.6}already exists. Would you like to overwrite this deck?"
+                    "{s:1.6}A deck saved under the file name",
+                    "{C:attention,s:1.8}'#1#'{}",
+                    "{s:1.6}already exists.",
+                    " ",
+                    "{s:1.6}Would you like to overwrite this deck?"
                 }
             }
         }
