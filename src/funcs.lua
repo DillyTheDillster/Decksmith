@@ -127,11 +127,11 @@ function Decksmith.create_menu_page(args)
         -- print(option)
         if option[2] and option[2].type then
             if option[2].type == 'text_input' then
-                options.nodes[#options.nodes + 1] = {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.text_input_element(option[1], option[2])
+                options.nodes[#options.nodes + 1] = Decksmith.text_input_element(option[1], option[2])
             elseif option[2].type == 'toggle' then
-                options.nodes[#options.nodes + 1] = {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.toggle_element(option[1], option[2])
+                options.nodes[#options.nodes + 1] = Decksmith.toggle_element(option[1], option[2])
             elseif option[2].type == 'button' then
-                options.nodes[#options.nodes + 1] = {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.button_element(option[1], option[2])
+                options.nodes[#options.nodes + 1] = Decksmith.button_element(option[1], option[2])
             end
         else
             options.nodes[#options.nodes + 1] = option[1] == 'spacer' and {n=G.UIT.R, config = {minh = 0.02, colour = G.C.L_BLACK}} or Decksmith.text_input_element(option[1], option[2])
