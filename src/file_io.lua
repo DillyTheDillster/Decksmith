@@ -25,12 +25,11 @@ end
 
 -- Retrieves data from a specified deck
 function Decksmith.get_deck_data(path)
-    return assert(loadstring(SMODS.NFS.read('Decksmith_decks/' .. path)))()
+    return assert(setfenv(loadstring(SMODS.NFS.read('Decksmith_decks/' .. path)), {}))()
 end
 
 -- Uses deck data to set deck preset
 function Decksmith.set_deck_preset(path)
-
     local deck_data = Decksmith.get_deck_data(path)
     for k, v in pairs(deck_data) do
         if v ~= '' then
@@ -65,9 +64,9 @@ function Decksmith.write_deck(path)
             file:write('    ' .. tostring(k) .. ' = ')
             local value
             if type(v) == 'table' then
-                value = '{'
+                value = '{ '
                 for kk, vv in pairs(v) do
-                    value = value .. tostring(kk) .. ' = ' .. tostring(vv) .. ','
+                    value = value .. tostring(kk) .. ' = ' .. tostring(vv) .. ', '
                 end
                 value = value .. '}'
             else
