@@ -122,6 +122,12 @@ function G.FUNCS.ds_cancel_write()
     Decksmith.overwrite_popup = nil
 end
 
+function G.FUNCS.ds_init_save_process()
+    local deck_name = Decksmith.start_args.ds_name or Decksmith.defaults.ds_name.reset
+    local new_path = string.gsub(deck_name, " ", "_") .. '.jkr'
+    Decksmith.check_save_deck(new_path)
+end
+
 function G.UIDEF.ds_conflict_popup(path)
 
     local warning_nodes = {}

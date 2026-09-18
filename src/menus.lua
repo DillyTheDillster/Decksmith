@@ -170,6 +170,7 @@ Decksmith.customize_menu({
     automatic_preview = true,
     random_select = true,
     double_click_advance = false,
+    optional = function() return SMODS.RunSelect.Setup.choices.deck_choice == 'b_ds_custom' and tonumber(Decksmith.start_args.ds_joker_slots) and tonumber(Decksmith.start_args.ds_joker_slots) > 0 end,
     selection_limit = function() return tonumber(Decksmith.start_args.ds_joker_slots) or Decksmith.defaults.ds_joker_slots.reset end,
     generate_pool = function(self) return G.P_CENTER_POOLS.Joker end,
     selected_text = function(self, selection)
@@ -231,6 +232,7 @@ Decksmith.customize_menu({
     automatic_preview = true,
     random_select = true,
     double_click_advance = false,
+    optional = function() return SMODS.RunSelect.Setup.choices.deck_choice == 'b_ds_custom' and tonumber(Decksmith.start_args.ds_consumable_slots) and tonumber(Decksmith.start_args.ds_consumable_slots) > 0 end,
     selection_limit = function() return tonumber(Decksmith.start_args.ds_consumable_slots) or Decksmith.defaults.ds_consumable_slots.reset end,
     generate_pool = function(self) return SMODS.merge_lists(Decksmith.get_consumable_pools()) end,
     selected_text = function(self, selection)
@@ -395,16 +397,68 @@ Decksmith.customize_menu({
     end,
 } ]]
 
---[[ Decksmith.customize_menu {
+Decksmith.customize_menu {
     key = 'export',
+    ds_args = {
+        'ds_name',
+    },
     definition = function(self)
-        return Decksmith.create_menu_page({
-            key = 'k_ds_export',
-            no_reset = true,
-            no_random = true,
-            options = {
-                
-            }
-        })
+        SMODS.RunSelect.Functions.build_preview_areas('deck_choice')
+        local deck_preview = SMODS.RunSelect.Functions.build_preview_ui('deck_choice', true)
+        deck_preview.nodes[1].config.minh = Decksmith.page_height
+        deck_preview.nodes[1].config.align = 'cm'
+        SMODS.RunSelect.Functions.populate_preview_ui('deck_choice', SMODS.RunSelect.Setup.choices.deck_choice, true)
+
+        return
+            {n = G.UIT.R, config = {align = 'cm'}, nodes = {
+                deck_preview,
+                {n=G.UIT.C, config={minh = Decksmith.page_height, padding = 0.1}, nodes = {
+                    {n=G.UIT.R, config = {colour = G.C.BLACK, r = true, align = 'cl', padding = 0.1, emboss = 0.05}, nodes = {
+                        {n=G.UIT.C, config = {align = 'cm', minw = 1}, nodes = {
+                            {n=G.UIT.R, config={minh=Decksmith.page_height-0.4-(4*Decksmith.button_size), align='cm'}, nodes={
+                                -- TODO: should probably be dynatext incase of localization changes or longer text
+                                {n=G.UIT.T, config = {text = localize('k_ds_export'), scale = 0.8, colour = G.C.L_BLACK, vert = true}}
+                            }},
+                        }},
+                        {n=G.UIT.C, config = {minh = 4, minw = 0.04, colour = G.C.L_BLACK}}, -- line
+                        {n=G.UIT.C, config = {align = 'cm', padding = 0.05}, nodes = {
+                            {n=G.UIT.R, config = { align = 'cm', padding = 0.3}, nodes = { -- Text Input Node
+                                {n=G.UIT.R, config = {align = 'cm', padding = 0.1, minw = 3.8}, nodes = {
+                                    {n=G.UIT.T, config = {text = localize('k_ds_name_deck'), scale = 0.67, colour = G.C.WHITE}}
+                                }},
+                                {n=G.UIT.R, config = { align = 'cm', padding = 0.1}, nodes = {
+                                    {n=G.UIT.C, config = {align = 'cm'}, nodes = {
+                                        create_text_input {
+                                            id = 'ds_name_input',
+                                            prompt_text = Decksmith.defaults['ds_name'].reset,
+                                            w = 2.5,
+                                            h = 1,
+                                            all_caps = false,
+                                            max_length = 100,
+                                            ref_table = Decksmith.start_args,
+                                            ref_value = 'ds_name',
+                                            extended_corpus = true
+                                        }
+                                    }},
+                                    {n=G.UIT.C, config = {align='cm'}, nodes = {
+                                        {n=G.UIT.C, config={minw = 0.2}},
+                                        Decksmith.create_value_button('reset', Decksmith.button_size, 'ds_name'),
+                                    }}
+                                }},
+                            }},
+                            { n = G.UIT.R, config = { align = "cm", minw = 2.5, padding = 0.4 }, nodes = { -- Save Deck Button
+                                { n = G.UIT.R, config = {  id = "ds_save_deck",align = "cm", padding = 0.3, no_fill = true, r = 0.1, hover = true, colour = G.C.GREEN, button = "ds_init_save_process", shadow = true, focus_args = { nav = "wide", button = "b" } }, nodes = {
+                                    { n = G.UIT.T, config = { text = localize("k_ds_save_deck"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+                                } },
+                            } },
+                            { n = G.UIT.R, config = { align = "cm", minw = 2.5, padding = 0.4 }, nodes = { --Open Decks Folder Button
+                                { n = G.UIT.R, config = { id = "ds_open_folder", align = "cm", padding = 0.3, no_fill = true, r = 0.1, hover = true, colour = G.C.ORANGE, button = "ds_open_decks_folder", shadow = true, focus_args = { nav = "wide", button = "b" } }, nodes = {
+                                    { n = G.UIT.T, config = { text = localize("k_ds_open_folder"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+                                } },
+                            } },
+                        }}
+                    }}
+                }},
+            }}
     end,
-} ]]
+}

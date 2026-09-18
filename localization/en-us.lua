@@ -47,6 +47,8 @@ return {
             k_ds_spectral_rate = 'Spectral Rate',
             k_ds_pcard_rate = 'Playing Card Rate',
 
+            k_ds_name_deck = 'Name Your Deck',
+
             -- Title labels
             k_ds_import = 'IMPORT DECK',
             k_ds_general = 'GENERAL',
@@ -79,7 +81,9 @@ return {
 
             -- Buttons
             k_ds_continue = 'Continue',
-            k_ds_cancel = 'Cancel'
+            k_ds_cancel = 'Cancel',
+            k_ds_open_folder = 'Open Decks Folder',
+            k_ds_save_deck = 'Save Deck'
         },
         v_dictionary = {
             a_ds_jokers_remaining = '#1# Joker(s) remaining',

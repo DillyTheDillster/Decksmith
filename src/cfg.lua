@@ -60,4 +60,7 @@ Decksmith.defaults = {
     ds_planet_rate = {reset = 4, min = 0, max = 50},
     ds_spectral_rate = {reset = 0, min = 0, max = 50},
     ds_pcard_rate = {reset = 0, min = 0, max = 50},
+
+    -- Name
+    ds_name = {reset = "My New Deck"}
 }
