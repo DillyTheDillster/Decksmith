@@ -415,7 +415,7 @@ Decksmith.customize_menu {
                 {n=G.UIT.C, config={minh = Decksmith.page_height, padding = 0.1}, nodes = {
                     {n=G.UIT.R, config = {colour = G.C.BLACK, r = true, align = 'cl', padding = 0.1, emboss = 0.05}, nodes = {
                         {n=G.UIT.C, config = {align = 'cm', minw = 1}, nodes = {
-                            {n=G.UIT.R, config={minh=Decksmith.page_height-0.4-(4*Decksmith.button_size), align='cm'}, nodes={
+                            {n=G.UIT.R, config={minh=Decksmith.page_height-0.2, align='cm'}, nodes={
                                 -- TODO: should probably be dynatext incase of localization changes or longer text
                                 {n=G.UIT.T, config = {text = localize('k_ds_export'), scale = 0.8, colour = G.C.L_BLACK, vert = true}}
                             }},
