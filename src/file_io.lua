@@ -84,7 +84,7 @@ function Decksmith.write_deck(path)
     file:open('w')
     file:write('return {\r\n')
     for k, v in pairs(Decksmith.start_args) do
-        if v ~= '' and v ~= {} then
+        if type(v) ~= 'table' and v ~= '' or type(v) == 'table' and next(v) ~= nil then
             file:write('    ' .. tostring(k) .. ' = ')
             local value = Decksmith.serialize_entry(v)
             file:write(tostring(value) .. ',\r\n')
