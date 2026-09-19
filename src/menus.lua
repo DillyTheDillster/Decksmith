@@ -443,7 +443,7 @@ Decksmith.customize_menu {
                                             w = 2.5,
                                             h = 1,
                                             all_caps = false,
-                                            max_length = 100,
+                                            max_length = 60,
                                             ref_table = Decksmith.start_args,
                                             ref_value = 'ds_name',
                                             extended_corpus = true
