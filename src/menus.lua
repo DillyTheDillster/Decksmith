@@ -187,7 +187,7 @@ Decksmith.customize_menu({
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after', delay = 0.7,
                     func = function()
-                        local c = SMODS.add_card({key = k, skip_materialize = true})
+                        local c = SMODS.add_card({key = k, skip_materialize = true, no_edition = true})
                         c:start_materialize()
                         return true
                     end
