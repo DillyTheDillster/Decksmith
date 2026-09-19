@@ -103,6 +103,7 @@ return {
             k_ds_reset_all = 'Reset All Values',
             k_ds_randomize = 'Randomize Value',
             k_ds_randomize_all = 'Randomize All Values',
+            k_ds_refresh = 'Refresh Page',
 
             -- Buttons
             k_ds_continue = 'Continue',

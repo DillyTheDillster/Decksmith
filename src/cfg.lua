@@ -34,6 +34,14 @@ Decksmith.buttons = {
         on_click = 'ds_random_all',
         tooltip = 'k_ds_randomize_all'
     },
+    refresh = {
+        hover = true,
+        shadow = true,
+        atlas = 'tags',
+        pos = { x = 0, y = 2 },
+        on_click = 'ds_refresh',
+        tooltip = 'k_ds_refresh'
+    },
 }
 
 Decksmith.defaults = {

@@ -88,30 +88,6 @@ function Decksmith.toggle_element(value, args)
     return t
 end
 
-function Decksmith.button_element(value, args)
-    args = args or {}
-    args.colour = args.colour or G.C.BLUE
-    local label = args.label or G.localization.misc.dictionary['k_'..value] or value
-    label = type(label) == 'string' and {label} or label
-
-    local btn_text = ''
-
-    for i, v in ipairs(label) do
-        btn_text = btn_text .. i == 1 and '' or '' .. v
-    end
-
-    local t = {
-        n=G.UIT.R, config = { align = 'cm', minh = 2}, nodes = {
-            {n=G.UIT.R, config = {align = 'cm', colour = args.colour or G.C.BLUE, r = 0.1, hover = true, button = args.button or value, func = args.func, ref_value = value, miw = 3, minh = 0.5, padding = 0.05}, nodes = {
-                {n=G.UIT.T, config = {text = btn_text, colour = args.colour or G.C.UI.TEXT_LIGHT}}
-            }}
-        }
-    }
-
-    return t
-end
-
-
 function Decksmith.create_menu_page(args)
     SMODS.RunSelect.Functions.build_preview_areas('deck_choice')
     local deck_preview = SMODS.RunSelect.Functions.build_preview_ui('deck_choice', true)
@@ -184,7 +160,7 @@ function Decksmith.create_value_button(type, size, key)
             align = 'cm',
             r = true
         }, nodes = {
-            {n=G.UIT.O, config = {object = sprite}}
+            {n=G.UIT.O, config = {align = 'cm', object = sprite}}
         }}
     end
 
@@ -226,6 +202,10 @@ G.FUNCS.ds_random_all = function(e)
     for _, v in pairs(Decksmith.this_page_random_options) do
         Decksmith.start_args[v] = math.random(Decksmith.defaults[v].min, Decksmith.defaults[v].max)
     end
+    Decksmith.reset_page()
+end
+
+G.FUNCS.ds_refresh = function(e)
     Decksmith.reset_page()
 end
 
@@ -330,16 +310,21 @@ local function ds_import_category(key)
 end
 
 local function ds_import_build_rows(settings)
+    local row_blacklist = {
+        ds_name = true
+    }
     local grouped, rows = {}, {}
     for key, value in pairs(settings) do
-        local category = ds_import_category(key)
-        grouped[category] = grouped[category] or {}
-        if type(value) == 'table' then
-            for _, row in ipairs(ds_import_flatten(value, '', {})) do
-                grouped[category][#grouped[category] + 1] = row
+        if not row_blacklist[key] then
+            local category = ds_import_category(key)
+            grouped[category] = grouped[category] or {}
+            if type(value) == 'table' then
+                for _, row in ipairs(ds_import_flatten(value, '', {})) do
+                    grouped[category][#grouped[category] + 1] = row
+                end
+            else
+                grouped[category][#grouped[category] + 1] = {label = ds_import_display_key(key), value = ds_import_display_value(value)}
             end
-        else
-            grouped[category][#grouped[category] + 1] = {label = ds_import_display_key(key), value = ds_import_display_value(value)}
         end
     end
     local category_keys = {}
@@ -513,17 +498,23 @@ end
 local function ds_import_file_button(filename, selected, file_info)
     local modified = file_info and file_info.modtime
     local date_text = type(modified) == 'number' and os.date('%Y-%m-%d', modified) or localize('k_ds_saved_deck_preset')
+    local filedata = Decksmith.get_deck_data(filename)
+    local deck_name = filedata.ds_name or filename:gsub('%.jkr$', '')
+    if string.len(deck_name) > 20 then
+        deck_name = string.sub(deck_name, 1, 17) .. '...'
+    end
     return {n = G.UIT.R, config = {
         align = 'cm', button = 'ds_import_select', ref_value = filename,
         hover = true, shadow = true, colour = selected and G.C.GREEN or G.C.BLUE,
         r = 0.1, minw = 3.35, minh = 0.72, padding = 0.06
     }, nodes = {
         {n = G.UIT.C, config = {align = 'cl', minw = 2.55}, nodes = {
-            {n = G.UIT.R, config = {align = 'cl'}, nodes = {ds_import_text(filename:gsub('%.jkr$', ''), 0.31)}},
+            {n = G.UIT.R, config = {align = 'cl'}, nodes = {ds_import_text(deck_name, 0.31)}},
             {n = G.UIT.R, config = {align = 'cl'}, nodes = {ds_import_text(date_text, 0.18, G.C.WHITE)}}
         }},
         {n = G.UIT.C, config = {align = 'cm', colour = selected and G.C.DARK_EDITION or G.C.BLACK,
-            r = 0.08, minw = 0.58, minh = 0.38}, nodes = {ds_import_text('JKR', 0.19, G.C.GOLD)}}
+            r = 0.08, minw = 0.58, minh = 0.38}, nodes = {ds_import_text('JKR', 0.19, G.C.GOLD)
+        }}
     }}
 end
 
@@ -579,11 +570,15 @@ local function ds_import_build_preview_nodes(state)
             ds_import_text(localize('k_ds_select_preview'), 0.38)
         }}}
     end
+    local deck_name = state.preview.ds_name or state.selected:gsub('%.jkr$', '')
+    if string.len(deck_name) > 45 then
+        deck_name = string.sub(deck_name, 1, 42) .. '...'
+    end
     local nodes = {{n = G.UIT.R, config = {align = 'cm', colour = G.C.BLUE, r = 0.1, minw = import_content_width, minh = 0.72, padding = 0.06}, nodes = {
         {n = G.UIT.C, config = {align = 'cl', minw = 4.7}, nodes = {
             {n = G.UIT.R, config = {align = 'cl'}, nodes = {
                 {n = G.UIT.C, config = {minw = 0.12}},
-                ds_import_text(state.preview.name or state.selected:gsub('%.jkr$', ''), 0.42, G.C.GOLD)
+                ds_import_text(deck_name, 0.42, G.C.GOLD)
             }},
             {n = G.UIT.R, config = {align = 'cl'}, nodes = {
                 {n = G.UIT.C, config = {minw = 0.12}},
@@ -606,8 +601,11 @@ function Decksmith.create_import_page()
     local preview_nodes = ds_import_build_preview_nodes(state)
     return {n = G.UIT.R, config = {align = 'cm', padding = 0.08}, nodes = {
         {n = G.UIT.C, config = {align = 'tm', colour = G.C.BLACK, r = 0.1, padding = 0.12, minw = import_list_width, minh = Decksmith.page_height}, nodes = {
-            {n = G.UIT.R, config = {align = 'cl', colour = G.C.RED, r = 0.08, minw = 3.35, minh = 0.62, padding = 0.08}, nodes = {
-                ds_import_text(localize('k_ds_saved_decks'), 0.38, G.C.WHITE)
+            {n = G.UIT.R, config = {align = 'cl', minw = 3.35, minh = 0.62, padding = 0.04}, nodes = {
+                {n=G.UIT.C, config = {align='cl', colour = G.C.ORANGE, r = 0.08, minw = 3.35 - Decksmith.button_size - 0.04, padding = 0.04, hover = true, button = 'ds_open_decks_folder'}, nodes = {
+                    ds_import_text(localize('k_ds_saved_decks'), 0.38, G.C.WHITE),
+                }},
+                Decksmith.create_value_button('refresh', Decksmith.button_size)
             }},
             {n = G.UIT.R, config = {align = 'cl', minw = 3.3, minh = 0.38, padding = 0.04}, nodes = {
                 ds_import_text(#state.files == 1 and localize('k_ds_one_deck') or localize{type = 'variable', key = 'a_ds_deck_count', vars = {#state.files}}, 0.21)
