@@ -86,24 +86,29 @@ function Decksmith.write_deck(path)
     for k, v in pairs(Decksmith.start_args) do
         if v ~= '' and v ~= {} then
             file:write('    ' .. tostring(k) .. ' = ')
-            local value
-            if type(v) == 'table' then
-                value = '{ '
-                for kk, vv in pairs(v) do
-                    value = value .. tostring(kk) .. ' = ' .. tostring(vv) .. ', '
-                end
-                value = value .. '}'
-            elseif type(v) == "string" and not tonumber(v) then
-                value = "'"..v.."'"
-            else
-                value = v
-            end
+            local value = Decksmith.serialize_entry(v)
             file:write(tostring(value) .. ',\r\n')
         end
     end 
     file:write('}')
     file:close()
     G.FUNCS.ds_open_decks_folder()
+end
+
+function Decksmith.serialize_entry(value)
+    local built_string
+    if type(value) == 'table' then
+        built_string = '{ '
+        for k, v in pairs(value) do
+            built_string = built_string .. tostring(k) .. ' = ' .. Decksmith.serialize_entry(v) .. ', '
+        end
+        built_string = built_string .. '}'
+    elseif type(value) == "string" and not tonumber(value) then
+        built_string = "'" .. value .. "'"
+    else
+        built_string = value
+    end
+    return built_string
 end
 
 function G.FUNCS.ds_open_decks_folder()
