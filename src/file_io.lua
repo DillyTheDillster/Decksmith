@@ -64,11 +64,17 @@ function Decksmith.check_save_deck(new_path)
                 config = {
                     align = 'cm',
                     major = G.ROOM_ATTACH,
-                    bond = 'Glued',
-                    r_bond = 'Glued',
+                    offset = {x=0,y=10},
+                    bond = 'Weak',
+                    no_esc = true,
                     instance_type = 'POPUP'
                 }
             })
+
+            Decksmith.overwrite_popup.alignment.offset.y = 0
+            G.ROOM.jiggle = G.ROOM.jiggle + 1
+            Decksmith.overwrite_popup:align_to_major()
+
             already_exists = true
             break
         end
